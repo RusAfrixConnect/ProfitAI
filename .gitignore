@@ -1,0 +1,27 @@
+# Fichiers sensibles - NE JAMAIS COMMITER
+.env
+.env.local
+.env.production
+
+# Dépendances
+node_modules/
+package-lock.json
+yarn.lock
+
+# Logs
+*.log
+npm-debug.log*
+
+# Système
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+.next/
+
+# Secrets
+secrets/
+*.key
+*.pem
