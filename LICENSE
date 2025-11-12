@@ -1,9 +1,6 @@
+MIT License with Crypto Financial Services Clause
 
-### **3. FICHIER : `LICENSE`** (à la racine)
-```plaintext
-MIT License
-
-Copyright (c) 2024 ProfitAI
+Copyright (c) 2025 ProfitAI.io
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -12,13 +9,26 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+ADDITIONAL CRYPTO FINANCIAL CLAUSE:
+
+1. FINANCIAL LICENSE REQUIRED: This Software may ONLY be used for real-world
+   cryptocurrency investment services if the user holds a valid financial
+   license from a recognized regulatory authority (PSAN, AMF, CySEC, FCA, SEC).
+
+2. SMART CONTRACT AUDIT: All smart contracts must be audited by a certified
+   blockchain security firm (CertiK, Trail of Bits, Consensys) before any
+   mainnet deployment.
+
+3. KYC/AML COMPLIANCE: The user MUST implement full Know-Your-Customer (KYC)
+   and Anti-Money-Laundering (AML) procedures via licensed providers.
+
+4. NON-LIABILITY: The author (Kimi/Anthropic) is NOT liable for any financial
+   losses, legal consequences, or regulatory violations resulting from the
+   use of this Software.
+
+5. EDUCATIONAL DEFAULT: By default, this Software runs in DEMO MODE with all
+   financial features DISABLED until explicit license verification.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+IMPLIED. BY USING THIS SOFTWARE, YOU ASSUME FULL LEGAL AND FINANCIAL
+RESPONSIBILITY.
