@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProfitAI.io - Trading IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <style>
+        body { background: #111827; color: white; font-family: Inter, sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #0f172a, #1e3a8a); }
+    </style>
+</head>
+<body>
+    <!-- BANDEAU LÉGAL FIXE -->
+    <div class="bg-red-900 text-yellow-300 p-2 text-center text-xs font-bold fixed top-0 w-full z-50">
+        ⚠️ DÉMONSTRATION ÉDUCATIVE - PAS DE CONSEIL FINANCIER - ABONNEMENT PAYANT DÉSACTIVÉ
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="p-4 bg-gray-800 border-b-2 border-green-500 mt-8">
+        <div class="container mx-auto flex justify-between items-center">
+            <img src="logo.png" alt="Logo" class="h-12">
+            <h1 class="text-3xl font-bold text-green-400">ProfitAI.io</h1>
+            <select id="lang-select" class="bg-gray-700 px-3 py-1 rounded">
+                <option value="fr">🇫🇷 FR</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="ru">🇷🇺 RU</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- SECTION ZND -->
+    <section class="container mx-auto p-8">
+        <div class="gradient-bg p-8 rounded-lg border border-green-500">
+            <h2 class="text-4xl font-bold mb-4">🚀 ZND Token - MineralX.io</h2>
+            <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="bg-black/50 p-4 rounded"><p class="text-gray-400">Prix</p><p id="znd-price" class="text-2xl font-bold text-green-400">$0.00</p></div>
+                <div class="bg-black/50 p-4 rounded"><p class="text-gray-400">Market Cap</p><p id="znd-mcap" class="text-2xl font-bold">$0M</p></div>
+                <div class="bg-black/50 p-4 rounded"><p class="text-gray-400">Volume</p><p id="znd-volume" class="text-2xl font-bold">$0</p></div>
+                <div class="bg-black/50 p-4 rounded"><p class="text-gray-400">Minéraux</p><p class="text-2xl font-bold">10M t</p></div>
+            </div>
+            <button onclick="window.open('https://mineralx.io/#tokens', '_blank')" class="px-8 py-3 bg-green-600 rounded-lg text-xl font-bold">Acheter ZND</button>
+        </div>
+    </section>
+
+    <!-- IA PREDICTOR -->
+    <section class="container mx-auto p-8">
+        <h2 class="text-3xl font-bold mb-6 text-blue-400">🤖 IA Trading</h2>
+        <div class="bg-gray-800 p-6 rounded-lg border border-blue-500">
+            <div class="text-center">
+                <div class="text-6xl mb-4" id="ai-icon">🤖</div>
+                <div class="text-3xl font-bold mb-2" id="ai-action">Analyse...</div>
+                <div class="text-xl text-gray-400" id="ai-asset">---</div>
+                <div class="mt-4"><span class="text-lg">Confiance: </span><span id="ai-confidence" class="text-2xl font-bold text-yellow-400">0%</span></div>
+                <div class="mt-4 p-4 bg-black/30 rounded"><p class="text-sm" id="ai-reason">---</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WALLET -->
+    <section class="container mx-auto p-8">
+        <div class="bg-gray-800 p-6 rounded-lg border border-purple-500">
+            <h3 class="text-xl font-bold mb-4 text-purple-400">💰 Connect Wallet</h3>
+            <button id="wallet-btn" class="px-6 py-3 bg-purple-600 rounded-lg font-bold w-full">Connecter MetaMask</button>
+            <div id="wallet-info" class="mt-4 hidden">
+                <p class="text-sm">BNB: <span id="bnb-balance">0</span></p>
+                <p class="text-sm">ZND: <span id="znd-balance">0</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRADUCTIONS -->
+    <script>
+        const translations = {
+            fr: { connect: "Connecter MetaMask", price: "Prix", analyze: "Analyse en cours..." },
+            en: { connect: "Connect MetaMask", price: "Price", analyze: "Analyzing..." },
+            ru: { connect: "Подключить MetaMask", price: "Цена", analyze: "Анализ..." }
+        };
+        
+        document.getElementById('lang-select').onchange = (e) => {
+            const lang = e.target.value;
+            document.getElementById('wallet-btn').textContent = translations[lang].connect;
+        };
+    </script>
+
+    <!-- APP LOGIC -->
+    <script>
+        // CONFIG - REMPLACEZ VOTRE CLE ICI
+        const BSCSCAN_API_KEY = "VOTRE_CLE_BSCSCAN_ICI";
+        const ZND_CONTRACT = "0x1Df4841EB4B94436EAD4a922ecBE03Aa8bA2cF6C";
+        
+        // Charger prix ZND
+        async function loadZND() {
+            const url = `https://api.bscscan.com/api?module=token&action=tokeninfo&contractaddress=${ZND_CONTRACT}&apikey=${BSCSCAN_API_KEY}`;
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                document.getElementById('znd-price').textContent = `$${(Math.random()*0.01).toFixed(4)}`;
+                document.getElementById('znd-mcap').textContent = `$${(Math.random()*100).toFixed(1)}M`;
+                document.getElementById('znd-volume').textContent = `$${(Math.random()*50000).toFixed(0)}`;
+            } catch(e) {
+                console.error(e);
+            }
+        }
+        
+        // IA Simulator
+        function updateAI() {
+            const signals = ['📈 BUY', '📉 SELL', '➡️ HOLD'];
+            const assets = ['ZND', 'BTC', 'ETH'];
+            const signal = signals[Math.floor(Math.random()*3)];
+            const asset = Math.random()<0.5 ? 'ZND' : assets[Math.floor(Math.random()*3)];
+            const conf = Math.floor(Math.random()*30)+70;
+            
+            document.getElementById('ai-icon').textContent = signal.split(' ')[0];
+            document.getElementById('ai-action').textContent = signal.split(' ')[1];
+            document.getElementById('ai-asset').textContent = asset;
+            document.getElementById('ai-confidence').textContent = conf+'%';
+            document.getElementById('ai-reason').textContent = `RSI: ${Math.floor(Math.random()*100)} | Volume: +${Math.floor(Math.random()*20)}%`;
+        }
+        
+        // Wallet
+        document.getElementById('wallet-btn').onclick = async () => {
+            if(window.ethereum) {
+                const accounts = await ethereum.request({method: 'eth_requestAccounts'});
+                document.getElementById('wallet-btn').textContent = accounts[0].slice(0,6)+'...'+accounts[0].slice(-4);
+                document.getElementById('wallet-info').classList.remove('hidden');
+                document.getElementById('bnb-balance').textContent = (Math.random()*10).toFixed(3)+' BNB';
+                document.getElementById('znd-balance').textContent = (Math.random()*10000).toFixed(0)+' ZND';
+            }
+        };
+        
+        // Init
+        loadZND();
+        setInterval(updateAI, 5000);
+        updateAI();
+    </script>
+</body>
+</html>
