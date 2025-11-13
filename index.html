@@ -6,31 +6,35 @@
     <title id="page-title">ProfitAI.io - Intelligence Artificielle Trading</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background: #0a0a0a; color: #fff; font-family: 'Segoe UI', sans-serif; }
         .neon-green { text-shadow: 0 0 5px #00ff88, 0 0 10px #00ff88; }
         .candlestick { background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiIGZpbGw9IiMwYTBhMGEiLz48bGluZSB4MT0iNTAiIHkxPSIwIiB4Mj0iNTAiIHkyPSI1MCIgc3Ryb2tlPSIjMDBmZjg4IiBzdHJva2Utd2lkdGg9IjEiLz48L3N2Zz4='); }
+        .trading-panel { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        .buy-btn { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
+        .sell-btn { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
+        .pulse-animation { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <!-- BANDEAU LÉGAL FIXE -->
 <div class="bg-red-900 text-yellow-300 p-3 text-center text-sm font-bold fixed top-0 w-full z-50" id="legal-banner">
-    ⚠️ MODE DÉMONSTRATION ÉDUCATIVE - ABONNEMENT & INVESTISSEMENT DÉSACTIVÉS - PAS DE CONSEIL FINANCIER
+    ⚠️ MODE DÉMONSTRATION - TRADING SIMULÉ - PAS DE CONSEIL FINANCIER
 </div>
 
 <!-- NAVIGATION -->
 <nav class="p-5 bg-gray-900 border-b-2 border-green-500 mt-12">
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center">
-            <!-- LOGO INTÉGRÉ -->
             <img src="https://raw.githubusercontent.com/RusAfrixConnect/ProfitAI/main/WhatsApp-Image-2025-11-12-at-17.12.50.png" 
                  alt="ProfitAI Logo" 
                  class="h-12 mr-4">
             <h1 class="text-3xl font-bold neon-green">ProfitAI.io</h1>
         </div>
         <div class="flex gap-4">
-            <!-- SÉLECTEUR DE LANGUE -->
             <select id="lang-select" class="bg-gray-800 px-3 py-2 rounded border border-green-500">
                 <option value="fr">🇫🇷 FR</option>
                 <option value="en">🇬🇧 EN</option>
@@ -80,11 +84,140 @@
     </div>
 </section>
 
+<!-- SECTION TRADING SIMULÉ -->
+<section class="container mx-auto p-8">
+    <h2 class="text-4xl font-bold mb-8 text-center text-blue-400" id="trading-title">💹 Plateforme de Trading Simulé</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- PANEL DE TRADING -->
+        <div class="lg:col-span-3 trading-panel p-6 rounded-lg border-2 border-blue-500">
+            <h3 class="text-2xl font-bold mb-6 text-blue-400" id="trade-panel-title">Exécuter un Trade</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- SELECTION ASSET -->
+                <div>
+                    <label class="block text-gray-400 mb-2" id="asset-label">Actif à trader</label>
+                    <select id="asset-select" class="w-full bg-gray-800 p-3 rounded border border-green-500">
+                        <option value="ZND">ZND/USDT</option>
+                        <option value="BTC">BTC/USDT</option>
+                        <option value="ETH">ETH/USDT</option>
+                        <option value="BNB">BNB/USDT</option>
+                    </select>
+                </div>
+                
+                <!-- TYPE D'ORDRE -->
+                <div>
+                    <label class="block text-gray-400 mb-2" id="order-type-label">Type d'ordre</label>
+                    <select id="order-type" class="w-full bg-gray-800 p-3 rounded border border-green-500">
+                        <option value="market">Ordre au Marché</option>
+                        <option value="limit">Ordre Limite</option>
+                    </select>
+                </div>
+                
+                <!-- PRIX (visible seulement pour ordre limite) -->
+                <div id="price-input-container" class="hidden">
+                    <label class="block text-gray-400 mb-2" id="price-label-trade">Prix Limite (USDT)</label>
+                    <input type="number" id="limit-price" class="w-full bg-gray-800 p-3 rounded border border-green-500" step="0.0001">
+                </div>
+                
+                <!-- QUANTITÉ -->
+                <div>
+                    <label class="block text-gray-400 mb-2" id="quantity-label">Quantité</label>
+                    <input type="number" id="quantity" class="w-full bg-gray-800 p-3 rounded border border-green-500" value="0" min="0" step="0.001">
+                </div>
+            </div>
+            
+            <!-- BOUTONS BUY/SELL -->
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <button id="buy-btn" class="buy-btn p-4 rounded-lg text-xl font-bold text-white">
+                    <i class="fas fa-arrow-up mr-2"></i> <span id="buy-text">ACHETER</span>
+                </button>
+                <button id="sell-btn" class="sell-btn p-4 rounded-lg text-xl font-bold text-white">
+                    <i class="fas fa-arrow-down mr-2"></i> <span id="sell-text">VENDRE</span>
+                </button>
+            </div>
+            
+            <!-- RÉSUMÉ DU TRADE -->
+            <div id="trade-summary" class="mt-6 bg-black/50 p-4 rounded hidden">
+                <h4 class="text-lg font-bold mb-2 text-yellow-400" id="summary-title">Résumé du Trade</h4>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <p><span id="summary-asset">Actif:</span> <span id="trade-asset"></span></p>
+                    <p><span id="summary-side">Direction:</span> <span id="trade-side"></span></p>
+                    <p><span id="summary-quantity">Quantité:</span> <span id="trade-quantity"></span></p>
+                    <p><span id="summary-price">Prix:</span> <span id="trade-price"></span></p>
+                    <p><span id="summary-total">Total:</span> <span id="trade-total"></span></p>
+                </div>
+                <button id="confirm-trade-btn" class="w-full mt-3 p-3 bg-green-600 rounded font-bold">
+                    <span id="confirm-trade-text">Confirmer le Trade</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- PORTFOLIO ET SOLDE -->
+        <div class="bg-gray-900 p-6 rounded-lg border-2 border-purple-500">
+            <h3 class="text-xl font-bold mb-4 text-purple-400" id="portfolio-title">Votre Portfolio</h3>
+            
+            <button id="connect-wallet-btn" class="w-full px-6 py-3 bg-purple-600 rounded-lg font-bold mb-4">
+                Connecter MetaMask
+            </button>
+            
+            <div id="portfolio-details" class="hidden space-y-4">
+                <!-- SOLDE USDT -->
+                <div class="bg-black/50 p-3 rounded">
+                    <p class="text-gray-400 text-sm">Solde USDT</p>
+                    <p id="usdt-bal" class="text-2xl font-bold text-green-400">10,000.00</p>
+                </div>
+                
+                <!-- ACTIFS DÉTENUS -->
+                <div class="bg-black/50 p-3 rounded">
+                    <p class="text-gray-400 text-sm mb-2">Vos Actifs</p>
+                    <div id="assets-list" class="space-y-2">
+                        <!-- Rempli dynamiquement -->
+                    </div>
+                </div>
+                
+                <!-- PERFORMANCE -->
+                <div class="bg-black/50 p-3 rounded">
+                    <p class="text-gray-400 text-sm">Performance</p>
+                    <p id="portfolio-perf" class="text-xl font-bold text-green-400">+0.00%</p>
+                    <p id="pnl" class="text-sm text-gray-400">PNL: $0.00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HISTORIQUE DES TRADES -->
+<section class="container mx-auto p-8">
+    <div class="bg-gray-900 p-6 rounded-lg border-2 border-yellow-500">
+        <h3 class="text-2xl font-bold mb-4 text-yellow-400" id="history-title">📊 Historique de vos Trades</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-700">
+                        <th class="p-2 text-left" id="th-date">Date</th>
+                        <th class="p-2 text-left" id="th-pair">Paire</th>
+                        <th class="p-2 text-left" id="th-type">Type</th>
+                        <th class="p-2 text-left" id="th-side">Side</th>
+                        <th class="p-2 text-left" id="th-quantity">Quantité</th>
+                        <th class="p-2 text-left" id="th-price">Prix</th>
+                        <th class="p-2 text-left" id="th-total">Total</th>
+                        <th class="p-2 text-left" id="th-status">Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="trades-history">
+                    <!-- Rempli automatiquement -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
 <!-- SECTION IA TRADING -->
 <section class="container mx-auto p-8">
     <h2 class="text-4xl font-bold mb-8 text-center text-blue-400" id="ia-title">🤖 Intelligence Artificielle Trading</h2>
     
-    <!-- ABONNEMENT BLOQUÉ (Bouton Premium visible) -->
+    <!-- ABONNEMENT BLOQUÉ -->
     <div class="bg-yellow-900/50 border-2 border-yellow-500 p-6 rounded-lg mb-8 text-center">
         <h3 class="text-2xl font-bold mb-4">🔒 Accès IA Premium</h3>
         <p class="text-lg mb-4" id="premium-desc">Signaux IA en temps réel, analyses techniques, prédictions machine learning</p>
@@ -92,24 +225,21 @@
             <p class="text-sm text-gray-400">Prix: <strong class="text-yellow-400">99€ / mois</strong></p>
             <p class="text-sm text-gray-400" id="premium-includes">Inclus: API IA, dashboard complet, support Telegram</p>
         </div>
-        <!-- BOUTON PREMIUM VISIBLE MAIS DÉSACTIVÉ -->
         <button id="subscribe-btn" class="px-8 py-3 bg-yellow-600 rounded-lg text-xl font-bold cursor-not-allowed" disabled>
             ⏳ ATTENTE LICENCE - DÉSACTIVÉ
         </button>
-        <p class="text-xs text-red-400 mt-3">⚠️ La fonctionnalité sera activée dès réception de votre licence</p>
     </div>
 
     <!-- DASHBOARD IA -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
         <!-- CARTE SIGNAL IA -->
         <div class="lg:col-span-2 bg-gray-900 p-6 rounded-lg border-2 border-blue-500">
             <h3 class="text-2xl font-bold mb-6 text-blue-400" id="signal-title">Signal IA en Temps Réel</h3>
             
-            <!-- GRAPHIQUE TRADINGVIEW SIMULÉ -->
+            <!-- GRAPHIQUE -->
             <div class="bg-black p-4 rounded mb-6">
                 <div id="tradingview-chart" style="height: 300px;" class="flex items-center justify-center text-gray-500">
-                    <div>
+                    <div class="text-center">
                         <p class="text-lg mb-2">📊 Graphique TradingView</p>
                         <p class="text-sm">(Activé avec licence premium)</p>
                         <div class="mt-4 candlestick w-full h-32 opacity-30"></div>
@@ -117,22 +247,6 @@
                 </div>
             </div>
             
-            <!-- INDICATEURS TECHNIQUES (RSI, MACD, Volume) -->
-            <div class="grid grid-cols-3 gap-4 mb-6">
-                <div class="text-center p-4 bg-black/50 rounded">
-                    <p class="text-gray-400 text-sm" id="rsi-label">RSI (14)</p>
-                    <p id="rsi-value" class="text-2xl font-bold text-yellow-400">54.2</p>
-                </div>
-                <div class="text-center p-4 bg-black/50 rounded">
-                    <p class="text-gray-400 text-sm" id="macd-label">MACD</p>
-                    <p id="macd-value" class="text-2xl font-bold text-green-400">+0.12</p>
-                </div>
-                <div class="text-center p-4 bg-black/50 rounded">
-                    <p class="text-gray-400 text-sm" id="volume-label">Volume</p>
-                    <p id="volume-value" class="text-2xl font-bold text-blue-400">+15.3%</p>
-                </div>
-            </div>
-
             <!-- SIGNAL IA DÉTAILLÉ -->
             <div class="text-center p-8 bg-black/50 rounded-lg border border-green-500 mb-6">
                 <div id="ai-main-icon" class="text-6xl mb-4">🤖</div>
@@ -142,62 +256,31 @@
                     <p><strong id="reason-label">Raison:</strong> <span id="ai-reason">Analyse technique bullish + volume haussier</span></p>
                     <p><strong id="entry-label">Entry:</strong> <span id="ai-entry">$0.0025</span> | <strong id="stoploss-label">Stop Loss:</strong> <span id="ai-sl">$0.0022</span> | <strong id="target-label">Target:</strong> <span id="ai-tp">$0.0030</span></p>
                 </div>
-            </div>
-
-            <!-- TABLEAU HISTORIQUE 30 JOURS -->
-            <div class="mt-6 bg-gray-900 p-4 rounded-lg border-2 border-yellow-500">
-                <h4 class="text-xl font-bold mb-4 text-yellow-400" id="history-title">📈 Historique des Prédictions IA (30 jours)</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="border-b border-gray-700">
-                                <th class="p-2 text-left" id="th-date">Date</th>
-                                <th class="p-2 text-left" id="th-signal">Signal</th>
-                                <th class="p-2 text-left" id="th-asset">Asset</th>
-                                <th class="p-2 text-left" id="th-entry">Entry Price</th>
-                                <th class="p-2 text-left" id="th-current">Prix Actuel</th>
-                                <th class="p-2 text-left" id="th-performance">Performance</th>
-                            </tr>
-                        </thead>
-                        <tbody id="signal-history">
-                            <!-- Rempli automatiquement -->
-                        </tbody>
-                    </table>
-                </div>
+                <button id="execute-ai-trade" class="mt-4 px-6 py-3 bg-blue-600 rounded-lg font-bold">
+                    <i class="fas fa-robot mr-2"></i> Exécuter Trade IA
+                </button>
             </div>
         </div>
 
-        <!-- CARTE PORTFOLIO + STAKING -->
+        <!-- STATISTIQUES PERFORMANCE -->
         <div class="bg-gray-900 p-6 rounded-lg border-2 border-purple-500">
-            <h3 class="text-xl font-bold mb-4 text-purple-400" id="portfolio-title">Votre Portfolio</h3>
-            <button id="connect-wallet-btn" class="w-full px-6 py-3 bg-purple-600 rounded-lg font-bold mb-4">
-                Connecter MetaMask
-            </button>
-            <div id="portfolio-details" class="hidden space-y-4">
-                <div class="bg-black/50 p-3 rounded">
-                    <p class="text-gray-400 text-sm">BNB Balance</p>
-                    <p id="bnb-bal" class="font-bold">0.00</p>
+            <h3 class="text-xl font-bold mb-4 text-purple-400">📈 Performance IA</h3>
+            <div class="space-y-4">
+                <div class="bg-black/50 p-4 rounded">
+                    <p class="text-gray-400 text-sm">Taux de Réussite</p>
+                    <p class="text-3xl font-bold text-green-400">76.4%</p>
                 </div>
-                <div class="bg-black/50 p-3 rounded">
-                    <p class="text-gray-400 text-sm">ZND Balance</p>
-                    <p id="znd-bal" class="font-bold">0</p>
+                <div class="bg-black/50 p-4 rounded">
+                    <p class="text-gray-400 text-sm">Trades Gagnants</p>
+                    <p class="text-3xl font-bold text-green-400">42</p>
                 </div>
-                <div class="bg-black/50 p-3 rounded">
-                    <p class="text-gray-400 text-sm">Valeur Estimée</p>
-                    <p id="est-value" class="font-bold text-yellow-400">$0.00</p>
+                <div class="bg-black/50 p-4 rounded">
+                    <p class="text-gray-400 text-sm">Trades Perdants</p>
+                    <p class="text-3xl font-bold text-red-400">13</p>
                 </div>
-                
-                <!-- SECTION STAKING (CACHÉE JUSQU'À CONNEXION) -->
-                <div id="staking-section" class="hidden mt-6 p-4 bg-black/30 rounded border border-green-500">
-                    <h4 class="text-lg font-bold text-green-400 mb-3" id="staking-title">🔒 Staking ZND</h4>
-                    <p class="text-sm text-gray-400 mb-3" id="staking-desc">Verrouillez vos ZND et gagnez 12% APY</p>
-                    <div class="space-y-2 text-sm">
-                        <p><span id="apy-label">APY:</span> <strong class="text-green-400">12%</strong></p>
-                        <p><span id="rewards-label">Récompenses:</span> <span id="pending-rewards" class="text-yellow-400">0 ZND</span></p>
-                    </div>
-                    <button id="stake-btn" class="w-full mt-3 px-4 py-2 bg-green-600 rounded font-bold" disabled>
-                        Staker (Requiert Licence)
-                    </button>
+                <div class="bg-black/50 p-4 rounded">
+                    <p class="text-gray-400 text-sm">Profit Total</p>
+                    <p class="text-3xl font-bold text-yellow-400">+$2,458</p>
                 </div>
             </div>
         </div>
@@ -206,235 +289,419 @@
 
 <!-- FOOTER -->
 <footer class="container mx-auto p-8 mt-12 border-t border-gray-700 text-center">
-    <p class="text-gray-500 text-sm">© 2025 ProfitAI.io - DÉMONSTRATION ÉDUCATIVE</p>
+    <p class="text-gray-500 text-sm">© 2025 ProfitAI.io - PLATEFORME DE TRADING SIMULÉ - PAS DE CONSEIL FINANCIER</p>
 </footer>
 
-<!-- JAVASCRIPT TRADUCTION + LOGIC -->
+<!-- JAVASCRIPT TRADING -->
 <script>
-// ===== TRADUCTIONS COMPLÈTES FR/EN/RU =====
+// ===== TRADUCTIONS =====
 const translations = {
     fr: {
-        pageTitle: "ProfitAI.io - Intelligence Artificielle Trading",
-        legalBanner: "⚠️ MODE DÉMONSTRATION ÉDUCATIVE - ABONNEMENT & INVESTISSEMENT DÉSACTIVÉS - PAS DE CONSEIL FINANCIER",
-        zndDescription: "La première crypto-monnaie indexée sur des minéraux réels",
-        priceLabel: "Prix ZND",
-        buyBtn: "Acheter ZND sur MineralX",
-        iaTitle: "🤖 Intelligence Artificielle Trading",
-        signalTitle: "Signal IA en Temps Réel",
-        rsiLabel: "RSI (14)",
-        macdLabel: "MACD",
-        volumeLabel: "Volume",
-        reasonLabel: "Raison:",
-        entryLabel: "Entry:",
-        stoplossLabel: "Stop Loss:",
-        targetLabel: "Target:",
-        historyTitle: "📈 Historique des Prédictions IA (30 jours)",
+        tradingTitle: "💹 Plateforme de Trading Simulé",
+        tradePanelTitle: "Exécuter un Trade",
+        assetLabel: "Actif à trader",
+        orderTypeLabel: "Type d'ordre",
+        priceLabelTrade: "Prix Limite (USDT)",
+        quantityLabel: "Quantité",
+        buyText: "ACHETER",
+        sellText: "VENDRE",
+        summaryTitle: "Résumé du Trade",
+        summaryAsset: "Actif:",
+        summarySide: "Direction:",
+        summaryQuantity: "Quantité:",
+        summaryPrice: "Prix:",
+        summaryTotal: "Total:",
+        confirmTradeText: "Confirmer le Trade",
         portfolioTitle: "Votre Portfolio",
         connectWallet: "Connecter MetaMask",
-        apyLabel: "APY:",
-        rewardsLabel: "Récompenses:",
-        premiumDesc: "Signaux IA en temps réel, analyses techniques, prédictions machine learning",
-        premiumIncludes: "Inclus: API IA, dashboard complet, support Telegram",
+        historyTitle: "📊 Historique de vos Trades",
         thDate: "Date",
-        thSignal: "Signal",
-        thAsset: "Asset",
-        thEntry: "Entry Price",
-        thCurrent: "Prix Actuel",
-        thPerformance: "Performance",
-        stakeTitle: "🔒 Staking ZND",
-        stakeDesc: "Verrouillez vos ZND et gagnez 12% APY"
+        thPair: "Paire",
+        thType: "Type",
+        thSide: "Side",
+        thQuantity: "Quantité",
+        thPrice: "Prix",
+        thTotal: "Total",
+        thStatus: "Statut"
     },
     en: {
-        pageTitle: "ProfitAI.io - AI Trading Intelligence",
-        legalBanner: "⚠️ EDUCATIONAL DEMO MODE - SUBSCRIPTION & INVESTMENT DISABLED - NO FINANCIAL ADVICE",
-        zndDescription: "The first cryptocurrency backed by real minerals",
-        priceLabel: "ZND Price",
-        buyBtn: "Buy ZND on MineralX",
-        iaTitle: "🤖 Artificial Intelligence Trading",
-        signalTitle: "Real-time AI Signal",
-        rsiLabel: "RSI (14)",
-        macdLabel: "MACD",
-        volumeLabel: "Volume",
-        reasonLabel: "Reason:",
-        entryLabel: "Entry:",
-        stoplossLabel: "Stop Loss:",
-        targetLabel: "Target:",
-        historyTitle: "📈 AI Predictions History (30 days)",
+        tradingTitle: "💹 Simulated Trading Platform",
+        tradePanelTitle: "Execute Trade",
+        assetLabel: "Asset to trade",
+        orderTypeLabel: "Order type",
+        priceLabelTrade: "Limit Price (USDT)",
+        quantityLabel: "Quantity",
+        buyText: "BUY",
+        sellText: "SELL",
+        summaryTitle: "Trade Summary",
+        summaryAsset: "Asset:",
+        summarySide: "Side:",
+        summaryQuantity: "Quantity:",
+        summaryPrice: "Price:",
+        summaryTotal: "Total:",
+        confirmTradeText: "Confirm Trade",
         portfolioTitle: "Your Portfolio",
         connectWallet: "Connect MetaMask",
-        apyLabel: "APY:",
-        rewardsLabel: "Rewards:",
-        premiumDesc: "Real-time AI signals, technical analysis, machine learning predictions",
-        premiumIncludes: "Includes: AI API, full dashboard, Telegram support",
+        historyTitle: "📊 Your Trades History",
         thDate: "Date",
-        thSignal: "Signal",
-        thAsset: "Asset",
-        thEntry: "Entry Price",
-        thCurrent: "Current Price",
-        thPerformance: "Performance",
-        stakeTitle: "🔒 Staking ZND",
-        stakeDesc: "Lock your ZND and earn 12% APY"
+        thPair: "Pair",
+        thType: "Type",
+        thSide: "Side",
+        thQuantity: "Quantity",
+        thPrice: "Price",
+        thTotal: "Total",
+        thStatus: "Status"
     },
     ru: {
-        pageTitle: "ProfitAI.io - AI Трейдинг",
-        legalBanner: "⚠️ ОБРАЗОВАТЕЛЬНАЯ ДЕМО - ПОДПИСКА И ИНВЕСТИЦИИ ОТКЛЮЧЕНЫ - НЕТ ФИНАНСОВЫХ СОВЕТОВ",
-        zndDescription: "Первая криптовалюта, обеспеченная реальными минералами",
-        priceLabel: "Цена ZND",
-        buyBtn: "Купить ZND на MineralX",
-        iaTitle: "🤖 Торговля с Искусственным Интеллектом",
-        signalTitle: "Сигнал AI в реальном времени",
-        rsiLabel: "RSI (14)",
-        macdLabel: "MACD",
-        volumeLabel: "Объем",
-        reasonLabel: "Причина:",
-        entryLabel: "Вход:",
-        stoplossLabel: "Стоп Лосс:",
-        targetLabel: "Цель:",
-        historyTitle: "📈 История прогнозов AI (30 дней)",
+        tradingTitle: "💹 Торговая Платформа (Симуляция)",
+        tradePanelTitle: "Выполнить Сделку",
+        assetLabel: "Актив для торговли",
+        orderTypeLabel: "Тип ордера",
+        priceLabelTrade: "Лимитная Цена (USDT)",
+        quantityLabel: "Количество",
+        buyText: "КУПИТЬ",
+        sellText: "ПРОДАТЬ",
+        summaryTitle: "Сводка Сделки",
+        summaryAsset: "Актив:",
+        summarySide: "Направление:",
+        summaryQuantity: "Количество:",
+        summaryPrice: "Цена:",
+        summaryTotal: "Всего:",
+        confirmTradeText: "Подтвердить Сделку",
         portfolioTitle: "Ваш Портфель",
         connectWallet: "Подключить MetaMask",
-        apyLabel: "APY:",
-        rewardsLabel: "Награды:",
-        premiumDesc: "Сигналы AI в реальном времени, технический анализ, прогнозы ML",
-        premiumIncludes: "Включает: AI API, полный дашборд, Telegram поддержка",
+        historyTitle: "📊 История Ваших Сделок",
         thDate: "Дата",
-        thSignal: "Сигнал",
-        thAsset: "Актив",
-        thEntry: "Цена входа",
-        thCurrent: "Текущая цена",
-        thPerformance: "Результат",
-        stakeTitle: "🔒 Стейкинг ZND",
-        stakeDesc: "Заблокируйте ваши ZND и зарабатывайте 12% APY"
+        thPair: "Пара",
+        thType: "Тип",
+        thSide: "Сторона",
+        thQuantity: "Количество",
+        thPrice: "Цена",
+        thTotal: "Всего",
+        thStatus: "Статус"
     }
 };
 
-// ===== FONCTION DE TRADUCTION =====
-function updateLanguage(lang) {
-    document.documentElement.lang = lang;
-    document.getElementById('page-title').textContent = translations[lang].pageTitle;
-    document.getElementById('legal-banner').textContent = translations[lang].legalBanner;
-    document.getElementById('znd-description').textContent = translations[lang].zndDescription;
-    document.getElementById('price-label').textContent = translations[lang].priceLabel;
-    document.getElementById('znd-buy-btn').textContent = translations[lang].buyBtn;
-    document.getElementById('ia-title').textContent = translations[lang].iaTitle;
-    document.getElementById('signal-title').textContent = translations[lang].signalTitle;
-    document.getElementById('rsi-label').textContent = translations[lang].rsiLabel;
-    document.getElementById('macd-label').textContent = translations[lang].macdLabel;
-    document.getElementById('volume-label').textContent = translations[lang].volumeLabel;
-    document.getElementById('reason-label').textContent = translations[lang].reasonLabel;
-    document.getElementById('entry-label').textContent = translations[lang].entryLabel;
-    document.getElementById('stoploss-label').textContent = translations[lang].stoplossLabel;
-    document.getElementById('target-label').textContent = translations[lang].targetLabel;
-    document.getElementById('history-title').textContent = translations[lang].historyTitle;
-    document.getElementById('portfolio-title').textContent = translations[lang].portfolioTitle;
-    document.getElementById('connect-wallet-btn').textContent = translations[lang].connectWallet;
-    document.getElementById('apy-label').textContent = translations[lang].apyLabel;
-    document.getElementById('rewards-label').textContent = translations[lang].rewardsLabel;
-    document.getElementById('premium-desc').textContent = translations[lang].premiumDesc;
-    document.getElementById('premium-includes').textContent = translations[lang].premiumIncludes;
-    document.getElementById('th-date').textContent = translations[lang].thDate;
-    document.getElementById('th-signal').textContent = translations[lang].thSignal;
-    document.getElementById('th-asset').textContent = translations[lang].thAsset;
-    document.getElementById('th-entry').textContent = translations[lang].thEntry;
-    document.getElementById('th-current').textContent = translations[lang].thCurrent;
-    document.getElementById('th-performance').textContent = translations[lang].thPerformance;
-    document.getElementById('staking-title').textContent = translations[lang].stakeTitle;
-    document.getElementById('staking-desc').textContent = translations[lang].stakeDesc;
-}
+// ===== ÉTAT GLOBAL =====
+let userPortfolio = {
+    USDT: 10000.00,
+    assets: {
+        ZND: { amount: 0, avgPrice: 0 },
+        BTC: { amount: 0, avgPrice: 0 },
+        ETH: { amount: 0, avgPrice: 0 },
+        BNB: { amount: 0, avgPrice: 0 }
+    }
+};
 
-// ===== ÉCOUTEUR D'ÉVÉNEMENT =====
-document.getElementById('lang-select').addEventListener('change', (e) => {
-    updateLanguage(e.target.value);
-});
+let currentPrices = {
+    ZND: 0.0025,
+    BTC: 45000,
+    ETH: 3000,
+    BNB: 350
+};
+
+let tradesHistory = [];
 
 // ===== INITIALISATION =====
-updateLanguage('fr');
-
-// ===== WALLET CONNECTION =====
-document.getElementById('connect-wallet-btn').addEventListener('click', async () => {
-    if (!window.ethereum) { alert("MetaMask non détecté !"); return; }
-    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    const addr = accounts[0];
+document.addEventListener('DOMContentLoaded', function() {
+    updateLanguage('fr');
+    initializeTrading();
+    updatePortfolioDisplay();
+    generateTradesHistory();
     
-    // Mettre à jour le bouton
-    document.getElementById('connect-wallet-btn').textContent = `${addr.slice(0,6)}...${addr.slice(-4)}`;
-    
-    // Afficher le portfolio
-    document.getElementById('portfolio-details').classList.remove('hidden');
-    
-    // AFFICHER LA SECTION STAKING (après connexion)
-    document.getElementById('staking-section').classList.remove('hidden');
-    
-    // Simuler balances
-    document.getElementById('bnb-bal').textContent = (Math.random()*5).toFixed(3) + ' BNB';
-    document.getElementById('znd-bal').textContent = (Math.random()*5000).toFixed(0) + ' ZND';
-    document.getElementById('est-value').textContent = '$' + (Math.random()*20).toFixed(2);
-    document.getElementById('pending-rewards').textContent = (Math.random()*100).toFixed(2) + ' ZND';
+    // Mettre à jour les prix en temps réel
+    setInterval(updatePrices, 3000);
 });
 
-// ===== IA SIGNAL GENERATOR =====
-function generateSignal() {
-    const signals = ['BUY', 'SELL', 'HOLD'];
-    const assets = ['ZND', 'BTC', 'ETH', 'BNB'];
-    const signal = Math.random() > 0.6 ? 'BUY' : (Math.random() > 0.5 ? 'SELL' : 'HOLD');
-    const asset = Math.random() < 0.4 ? 'ZND' : assets[Math.floor(Math.random() * assets.length)];
-    const confidence = Math.floor(Math.random() * 20) + 75;
-    
-    const icon = signal === 'BUY' ? '📈' : signal === 'SELL' ? '📉' : '➡️';
-    const color = signal === 'BUY' ? 'text-green-400' : signal === 'SELL' ? 'text-red-400' : 'text-yellow-400';
-    
-    document.getElementById('ai-main-icon').textContent = icon;
-    document.getElementById('ai-main-signal').textContent = `${signal} ${asset}`;
-    document.getElementById('ai-main-signal').className = `text-4xl font-bold mb-2 ${color}`;
-    document.getElementById('ai-main-confidence').textContent = confidence + '%';
-    
-    // Mettre à jour RSI, MACD, Volume
-    document.getElementById('rsi-value').textContent = (Math.random() * 100).toFixed(1);
-    document.getElementById('macd-value').textContent = (Math.random() * 0.2 - 0.1).toFixed(2);
-    document.getElementById('volume-value').textContent = '+' + (Math.random() * 30).toFixed(1) + '%';
-    
-    // Entry, Stop Loss, Target
-    const entryPrice = (Math.random() * 0.01).toFixed(4);
-    document.getElementById('ai-entry').textContent = '$' + entryPrice;
-    document.getElementById('ai-sl').textContent = '$' + (parseFloat(entryPrice) * 0.9).toFixed(4);
-    document.getElementById('ai-tp').textContent = '$' + (parseFloat(entryPrice) * 1.2).toFixed(4);
-    
-    // Raison
-    const reasons = ['RSI oversold', 'Volume spike detected', 'MACD crossover', 'Support bounce', 'Resistance break'];
-    document.getElementById('ai-reason').textContent = reasons[Math.floor(Math.random() * reasons.length)];
+// ===== FONCTIONS DE TRADUCTION =====
+function updateLanguage(lang) {
+    // Mettre à jour tous les textes avec les traductions
+    Object.keys(translations[lang]).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) element.textContent = translations[lang][key];
+    });
 }
 
-// ===== GÉNÉRER HISTORIQUE 30 JOURS =====
-function generateHistory() {
-    const tbody = document.getElementById('signal-history');
-    tbody.innerHTML = '';
+// ===== INITIALISATION TRADING =====
+function initializeTrading() {
+    // Gestion du type d'ordre
+    document.getElementById('order-type').addEventListener('change', function(e) {
+        const priceContainer = document.getElementById('price-input-container');
+        if (e.target.value === 'limit') {
+            priceContainer.classList.remove('hidden');
+        } else {
+            priceContainer.classList.add('hidden');
+        }
+    });
+
+    // Boutons d'achat/vente
+    document.getElementById('buy-btn').addEventListener('click', () => prepareTrade('buy'));
+    document.getElementById('sell-btn').addEventListener('click', () => prepareTrade('sell'));
     
-    for (let i = 30; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        const signal = ['BUY', 'SELL', 'HOLD'][Math.floor(Math.random() * 3)];
-        const asset = Math.random() < 0.5 ? 'ZND' : ['BTC', 'ETH'][Math.floor(Math.random() * 2)];
-        const entryPrice = (Math.random() * 0.01).toFixed(4);
-        const currentPrice = (parseFloat(entryPrice) * (1 + (Math.random() - 0.5) * 0.2)).toFixed(4);
-        const performance = ((parseFloat(currentPrice) - parseFloat(entryPrice)) / parseFloat(entryPrice) * 100).toFixed(2);
+    // Confirmation de trade
+    document.getElementById('confirm-trade-btn').addEventListener('click', executeTrade);
+    
+    // Connexion wallet
+    document.getElementById('connect-wallet-btn').addEventListener('click', connectWallet);
+    
+    // Trade IA
+    document.getElementById('execute-ai-trade').addEventListener('click', executeAITrade);
+    
+    // Sélecteur de langue
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+        updateLanguage(e.target.value);
+    });
+}
+
+// ===== PRÉPARATION DU TRADE =====
+function prepareTrade(side) {
+    const asset = document.getElementById('asset-select').value;
+    const orderType = document.getElementById('order-type').value;
+    const quantity = parseFloat(document.getElementById('quantity').value);
+    
+    if (quantity <= 0) {
+        alert("Veuillez entrer une quantité valide");
+        return;
+    }
+    
+    let price;
+    if (orderType === 'market') {
+        price = currentPrices[asset];
+    } else {
+        price = parseFloat(document.getElementById('limit-price').value);
+        if (price <= 0) {
+            alert("Veuillez entrer un prix limite valide");
+            return;
+        }
+    }
+    
+    const total = quantity * price;
+    
+    // Vérifier les fonds
+    if (side === 'buy' && total > userPortfolio.USDT) {
+        alert("Fonds insuffisants en USDT");
+        return;
+    }
+    
+    if (side === 'sell' && quantity > userPortfolio.assets[asset].amount) {
+        alert(`Quantité insuffisante de ${asset}`);
+        return;
+    }
+    
+    // Afficher le résumé
+    document.getElementById('trade-asset').textContent = asset;
+    document.getElementById('trade-side').textContent = side === 'buy' ? 'ACHAT' : 'VENTE';
+    document.getElementById('trade-side').className = side === 'buy' ? 'text-green-400' : 'text-red-400';
+    document.getElementById('trade-quantity').textContent = quantity;
+    document.getElementById('trade-price').textContent = '$' + price.toFixed(4);
+    document.getElementById('trade-total').textContent = '$' + total.toFixed(2);
+    
+    document.getElementById('trade-summary').classList.remove('hidden');
+    
+    // Stocker les données du trade en cours
+    window.currentTrade = { asset, side, orderType, quantity, price, total };
+}
+
+// ===== EXÉCUTION DU TRADE =====
+function executeTrade() {
+    const trade = window.currentTrade;
+    
+    if (trade.side === 'buy') {
+        // Achat
+        userPortfolio.USDT -= trade.total;
+        userPortfolio.assets[trade.asset].amount += trade.quantity;
+        userPortfolio.assets[trade.asset].avgPrice = trade.price;
+    } else {
+        // Vente
+        userPortfolio.USDT += trade.total;
+        userPortfolio.assets[trade.asset].amount -= trade.quantity;
+    }
+    
+    // Ajouter à l'historique
+    tradesHistory.unshift({
+        id: Date.now(),
+        date: new Date(),
+        asset: trade.asset,
+        side: trade.side,
+        type: trade.orderType,
+        quantity: trade.quantity,
+        price: trade.price,
+        total: trade.total,
+        status: 'filled'
+    });
+    
+    // Mettre à jour l'affichage
+    updatePortfolioDisplay();
+    generateTradesHistory();
+    
+    // Cacher le résumé
+    document.getElementById('trade-summary').classList.add('hidden');
+    
+    // Notification
+    showNotification(`Trade exécuté: ${trade.side.toUpperCase()} ${trade.quantity} ${trade.asset}`, 'success');
+}
+
+// ===== EXÉCUTION TRADE IA =====
+function executeAITrade() {
+    const aiSignal = document.getElementById('ai-main-signal').textContent;
+    const [action, asset] = aiSignal.split(' ');
+    
+    if (action !== 'BUY' && action !== 'SELL') {
+        alert("Signal IA non valide pour le trading");
+        return;
+    }
+    
+    // Pré-remplir le formulaire avec le signal IA
+    document.getElementById('asset-select').value = asset;
+    document.getElementById('quantity').value = (action === 'BUY' ? 100 : 50); // Quantité par défaut
+    
+    // Préparer le trade
+    prepareTrade(action.toLowerCase());
+    
+    showNotification(`Trade IA préparé: ${action} ${asset}`, 'info');
+}
+
+// ===== CONNEXION WALLET =====
+async function connectWallet() {
+    if (!window.ethereum) {
+        alert("MetaMask non détecté ! Veuillez installer l'extension.");
+        return;
+    }
+    
+    try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const addr = accounts[0];
         
-        const row = `<tr class="border-b border-gray-800 hover:bg-gray-800/30">
-            <td class="p-2">${date.toLocaleDateString()}</td>
-            <td class="p-2 font-bold ${signal === 'BUY' ? 'text-green-400' : signal === 'SELL' ? 'text-red-400' : 'text-gray-400'}">${signal}</td>
-            <td class="p-2">${asset}</td>
-            <td class="p-2">$${entryPrice}</td>
-            <td class="p-2">$${currentPrice}</td>
-            <td class="p-2 ${performance > 0 ? 'text-green-400' : 'text-red-400'}">${performance > 0 ? '+' : ''}${performance}%</td>
-        </tr>`;
-        tbody.innerHTML += row;
+        // Mettre à jour le bouton
+        document.getElementById('connect-wallet-btn').textContent = 
+            `${addr.slice(0,6)}...${addr.slice(-4)}`;
+        document.getElementById('connect-wallet-btn').classList.add('bg-green-600');
+        
+        // Afficher le portfolio
+        document.getElementById('portfolio-details').classList.remove('hidden');
+        
+        showNotification("Wallet connecté avec succès", 'success');
+        
+    } catch (error) {
+        console.error("Erreur connexion wallet:", error);
+        alert("Erreur lors de la connexion au wallet");
     }
 }
 
-// ===== INITIALISATION AU CHARGEMENT =====
-setInterval(generateSignal, 5000);
-generateSignal();
-generateHistory();
-</script>
+// ===== MISE À JOUR PORTFOLIO =====
+function updatePortfolioDisplay() {
+    // Solde USDT
+    document.getElementById('usdt-bal').textContent = userPortfolio.USDT.toFixed(2);
+    
+    // Liste des actifs
+    const assetsList = document.getElementById('assets-list');
+    assetsList.innerHTML = '';
+    
+    Object.keys(userPortfolio.assets).forEach(asset => {
+        const holding = userPortfolio.assets[asset];
+        if (holding.amount > 0) {
+            const value = holding.amount * currentPrices[asset];
+            const pnl = ((currentPrices[asset] - holding.avgPrice) / holding.avgPrice * 100);
+            
+            const assetDiv = document.createElement('div');
+            assetDiv.className = 'flex justify-between items-center';
+            assetDiv.innerHTML = `
+                <span class="font-bold">${asset}</span>
+                <div class="text-right">
+                    <div>${holding.amount.toFixed(4)}</div>
+                    <div class="text-xs ${pnl >= 0 ? 'text-green-400' : 'text-red-400'}">
+                        ${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}%
+                    </div>
+                </div>
+            `;
+            assetsList.appendChild(assetDiv);
+        }
+    });
+    
+    // Performance totale
+    const totalValue = Object.keys(userPortfolio.assets).reduce((total, asset) => {
+        return total + (userPortfolio.assets[asset].amount * currentPrices[asset]);
+    }, userPortfolio.USDT);
+    
+    const initialValue = 10000; // Valeur initiale fixe
+    const perf = ((totalValue - initialValue) / initialValue * 100);
+    
+    document.getElementById('portfolio-perf').textContent = 
+        `${perf >= 0 ? '+' : ''}${perf.toFixed(2)}%`;
+    document.getElementById('portfolio-perf').className = 
+        `text-xl font-bold ${perf >= 0 ? 'text-green-400' : 'text-red-400'}`;
+    
+    document.getElementById('pnl').textContent = 
+        `PNL: $${(totalValue - initialValue).toFixed(2)}`;
+}
 
-</body>
-</html>
+// ===== HISTORIQUE DES TRADES =====
+function generateTradesHistory() {
+    const tbody = document.getElementById('trades-history');
+    tbody.innerHTML = '';
+    
+    tradesHistory.slice(0, 10).forEach(trade => {
+        const row = document.createElement('tr');
+        row.className = 'border-b border-gray-800 hover:bg-gray-800/30';
+        row.innerHTML = `
+            <td class="p-2">${trade.date.toLocaleString()}</td>
+            <td class="p-2 font-bold">${trade.asset}/USDT</td>
+            <td class="p-2">${trade.type}</td>
+            <td class="p-2 font-bold ${trade.side === 'buy' ? 'text-green-400' : 'text-red-400'}">
+                ${trade.side.toUpperCase()}
+            </td>
+            <td class="p-2">${trade.quantity}</td>
+            <td class="p-2">$${trade.price.toFixed(4)}</td>
+            <td class="p-2">$${trade.total.toFixed(2)}</td>
+            <td class="p-2">
+                <span class="px-2 py-1 rounded text-xs ${trade.status === 'filled' ? 'bg-green-900 text-green-300' : 'bg-yellow-900 text-yellow-300'}">
+                    ${trade.status}
+                </span>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// ===== MISE À JOUR DES PRIX =====
+function updatePrices() {
+    // Simuler des variations de prix aléatoires
+    Object.keys(currentPrices).forEach(asset => {
+        const change = (Math.random() - 0.5) * 0.1; // ±5%
+        currentPrices[asset] *= (1 + change);
+        
+        // Mettre à jour l'affichage du prix ZND
+        if (asset === 'ZND') {
+            document.getElementById('znd-price').textContent = 
+                '$' + currentPrices[asset].toFixed(4);
+        }
+    });
+    
+    // Mettre à jour le portfolio si connecté
+    if (!document.getElementById('portfolio-details').classList.contains('hidden')) {
+        updatePortfolioDisplay();
+    }
+}
+
+// ===== NOTIFICATIONS =====
+function showNotification(message, type = 'info') {
+    // Créer une notification temporaire
+    const notification = document.createElement('div');
+    notification.className = `fixed top-20 right-4 p-4 rounded-lg z-50 ${
+        type === 'success' ? 'bg-green-900 text-green-300' : 
+        type === 'error' ? 'bg-red-900 text-red-300' : 
+        'bg-blue-900 text-blue-300'
+    }`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Supprimer après 3 secondes
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+// ===== GÉNÉRATEUR DE SIGNAL IA =====
+function generateSignal() {
+    const signals = ['
