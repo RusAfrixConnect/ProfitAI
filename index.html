@@ -16,6 +16,9 @@
         .sell-btn { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); }
         .pulse-animation { animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        .signal-buy { background: linear-gradient(135deg, #00b09b20 0%, #96c93d20 100%); border-left: 4px solid #00ff88; }
+        .signal-sell { background: linear-gradient(135deg, #ff416c20 0%, #ff4b2b20 100%); border-left: 4px solid #ff416c; }
+        .signal-hold { background: linear-gradient(135deg, #ffd70020 0%, #ffed4e20 100%); border-left: 4px solid #ffd700; }
     </style>
 </head>
 <body>
@@ -187,6 +190,226 @@
     </div>
 </section>
 
+<!-- SECTION ANALYSE TECHNIQUE AVANCÉE -->
+<section class="container mx-auto p-8">
+    <h2 class="text-4xl font-bold mb-8 text-center text-purple-400" id="tech-analysis-title">📊 Analyse Technique IA Temps Réel</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <!-- INDICATEURS TECHNIQUES -->
+        <div class="bg-gray-900 p-6 rounded-lg border-2 border-green-500">
+            <h3 class="text-2xl font-bold mb-4 text-green-400" id="indicators-title">📈 Indicateurs Techniques</h3>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <!-- RSI -->
+                <div class="bg-black/50 p-4 rounded">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-400" id="rsi-label">RSI (14)</span>
+                        <div class="w-20 bg-gray-700 rounded-full h-2">
+                            <div id="rsi-bar" class="bg-yellow-400 h-2 rounded-full" style="width: 54%"></div>
+                        </div>
+                    </div>
+                    <p id="rsi-value" class="text-2xl font-bold text-yellow-400">54.2</p>
+                    <p id="rsi-signal" class="text-sm text-gray-400">Neutre</p>
+                </div>
+                
+                <!-- MACD -->
+                <div class="bg-black/50 p-4 rounded">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-400" id="macd-label">MACD</span>
+                        <span id="macd-trend" class="text-xs px-2 py-1 bg-blue-900 rounded">Haussière</span>
+                    </div>
+                    <p id="macd-value" class="text-2xl font-bold text-blue-400">+0.12</p>
+                    <p id="macd-signal" class="text-sm text-gray-400">Signal: +0.08</p>
+                </div>
+                
+                <!-- BOLLINGER BANDS -->
+                <div class="bg-black/50 p-4 rounded">
+                    <span class="text-gray-400 text-sm" id="bollinger-label">Bollinger Bands</span>
+                    <p id="bollinger-value" class="text-2xl font-bold text-purple-400">$0.0025</p>
+                    <p id="bollinger-position" class="text-sm text-green-400">Bande Supérieure</p>
+                </div>
+                
+                <!-- VOLUME -->
+                <div class="bg-black/50 p-4 rounded">
+                    <span class="text-gray-400 text-sm" id="volume-label">Volume 24h</span>
+                    <p id="volume-value" class="text-2xl font-bold text-green-400">+15.3%</p>
+                    <p id="volume-trend" class="text-sm text-gray-400">Accumulation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SENTIMENT MARKET -->
+        <div class="bg-gray-900 p-6 rounded-lg border-2 border-blue-500">
+            <h3 class="text-2xl font-bold mb-4 text-blue-400" id="sentiment-title">🎯 Sentiment de Marché IA</h3>
+            
+            <div class="space-y-4">
+                <!-- SENTIMENT GAUGE -->
+                <div class="text-center">
+                    <div class="inline-block relative w-32 h-32">
+                        <svg class="w-32 h-32" viewBox="0 0 36 36">
+                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                                  fill="none" stroke="#1a1a2e" stroke-width="3"/>
+                            <path id="sentiment-gauge" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" 
+                                  fill="none" stroke="#00ff88" stroke-width="3" stroke-dasharray="75, 100"/>
+                            <text x="18" y="20" text-anchor="middle" fill="#00ff88" font-size="8" font-weight="bold">
+                                <tspan x="18" y="20" id="sentiment-value">75%</tspan>
+                            </text>
+                        </svg>
+                    </div>
+                    <p id="sentiment-text" class="text-xl font-bold text-green-400 mt-2">Haussier</p>
+                </div>
+                
+                <!-- FACTEURS INFLUENCE -->
+                <div class="bg-black/50 p-4 rounded">
+                    <h4 class="text-lg font-bold mb-2 text-yellow-400" id="factors-title">Facteurs d'Influence</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Technique:</span>
+                            <span class="text-green-400">+0.8</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Volume:</span>
+                            <span class="text-green-400">+0.6</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Sentiment:</span>
+                            <span class="text-yellow-400">+0.3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRÉDICTIONS ML TEMPS RÉEL -->
+    <div class="bg-gradient-to-r from-purple-900 to-blue-900 p-6 rounded-lg border-2 border-yellow-500">
+        <h3 class="text-2xl font-bold mb-6 text-yellow-400 text-center" id="ml-predictions-title">🤖 Prédictions Machine Learning</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- PRÉDICTION 1H -->
+            <div class="bg-black/50 p-4 rounded text-center">
+                <div class="text-3xl mb-2">⏰</div>
+                <h4 class="text-lg font-bold mb-2" id="pred-1h-title">1 Heure</h4>
+                <p id="pred-1h-direction" class="text-2xl font-bold text-green-400">+1.2%</p>
+                <p id="pred-1h-confidence" class="text-sm text-gray-400">Confiance: 82%</p>
+                <div class="mt-2 w-full bg-gray-700 rounded-full h-2">
+                    <div class="bg-green-400 h-2 rounded-full" style="width: 82%"></div>
+                </div>
+            </div>
+            
+            <!-- PRÉDICTION 24H -->
+            <div class="bg-black/50 p-4 rounded text-center">
+                <div class="text-3xl mb-2">📅</div>
+                <h4 class="text-lg font-bold mb-2" id="pred-24h-title">24 Heures</h4>
+                <p id="pred-24h-direction" class="text-2xl font-bold text-green-400">+3.8%</p>
+                <p id="pred-24h-confidence" class="text-sm text-gray-400">Confiance: 76%</p>
+                <div class="mt-2 w-full bg-gray-700 rounded-full h-2">
+                    <div class="bg-green-400 h-2 rounded-full" style="width: 76%"></div>
+                </div>
+            </div>
+            
+            <!-- PRÉDICTION 7J -->
+            <div class="bg-black/50 p-4 rounded text-center">
+                <div class="text-3xl mb-2">📊</div>
+                <h4 class="text-lg font-bold mb-2" id="pred-7d-title">7 Jours</h4>
+                <p id="pred-7d-direction" class="text-2xl font-bold text-red-400">-2.1%</p>
+                <p id="pred-7d-confidence" class="text-sm text-gray-400">Confiance: 68%</p>
+                <div class="mt-2 w-full bg-gray-700 rounded-full h-2">
+                    <div class="bg-red-400 h-2 rounded-full" style="width: 68%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ALGORITHMES ML UTILISÉS -->
+        <div class="mt-6 bg-black/30 p-4 rounded">
+            <h4 class="text-lg font-bold mb-3 text-center text-blue-400" id="ml-algorithms-title">Algorithmes ML Actifs</h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-2 bg-gray-800 rounded">
+                    <div class="text-green-400 text-sm">LSTM</div>
+                    <div class="text-xs text-gray-400">Séquences</div>
+                </div>
+                <div class="p-2 bg-gray-800 rounded">
+                    <div class="text-blue-400 text-sm">Random Forest</div>
+                    <div class="text-xs text-gray-400">Ensemble</div>
+                </div>
+                <div class="p-2 bg-gray-800 rounded">
+                    <div class="text-yellow-400 text-sm">XGBoost</div>
+                    <div class="text-xs text-gray-400">Gradient</div>
+                </div>
+                <div class="p-2 bg-gray-800 rounded">
+                    <div class="text-purple-400 text-sm">Prophet</div>
+                    <div class="text-xs text-gray-400">Time Series</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SIGNALS IA TEMPS RÉEL -->
+<section class="container mx-auto p-8">
+    <h2 class="text-4xl font-bold mb-8 text-center text-green-400" id="realtime-signals-title">🚨 Signaux IA Temps Réel</h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- FEED SIGNALS LIVE -->
+        <div class="bg-gray-900 p-6 rounded-lg border-2 border-red-500">
+            <h3 class="text-2xl font-bold mb-4 text-red-400" id="live-feed-title">📡 Feed Live des Signaux</h3>
+            
+            <div id="signals-feed" class="space-y-3 max-h-96 overflow-y-auto">
+                <!-- Signaux générés dynamiquement -->
+            </div>
+            
+            <div class="mt-4 text-center">
+                <div class="inline-flex items-center px-4 py-2 bg-red-600 rounded-lg">
+                    <div class="w-3 h-3 bg-red-400 rounded-full mr-2 pulse-animation"></div>
+                    <span id="live-status" class="font-bold">EN DIRECT</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALERTES PERSONNALISÉES -->
+        <div class="bg-gray-900 p-6 rounded-lg border-2 border-orange-500">
+            <h3 class="text-2xl font-bold mb-4 text-orange-400" id="alerts-title">🔔 Alertes Personnalisées</h3>
+            
+            <div class="space-y-4">
+                <!-- CONFIG ALERTES -->
+                <div class="bg-black/50 p-4 rounded">
+                    <h4 class="text-lg font-bold mb-3 text-yellow-400" id="setup-alerts-title">Configurer les Alertes</h4>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1" id="price-alert-label">Alerte Prix</label>
+                            <input type="number" id="price-alert" class="w-full bg-gray-800 p-2 rounded border border-green-500" placeholder="0.0000">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-400 text-sm mb-1" id="rsi-alert-label">Alerte RSI</label>
+                            <select id="rsi-alert" class="w-full bg-gray-800 p-2 rounded border border-green-500">
+                                <option value="overbought">RSI > 70 (Sur-achat)</option>
+                                <option value="oversold">RSI < 30 (Sur-vente)</option>
+                            </select>
+                        </div>
+                        
+                        <button id="set-alert-btn" class="w-full px-4 py-2 bg-orange-600 rounded font-bold">
+                            <span id="set-alert-text">Activer l'Alerte</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- ALERTES ACTIVES -->
+                <div class="bg-black/50 p-4 rounded">
+                    <h4 class="text-lg font-bold mb-3 text-green-400" id="active-alerts-title">Alertes Actives</h4>
+                    <div id="active-alerts-list" class="space-y-2">
+                        <div class="flex justify-between items-center p-2 bg-yellow-900/30 rounded">
+                            <span class="text-sm">ZND > $0.0030</span>
+                            <span class="text-xs bg-yellow-600 px-2 py-1 rounded">ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- HISTORIQUE DES TRADES -->
 <section class="container mx-auto p-8">
     <div class="bg-gray-900 p-6 rounded-lg border-2 border-yellow-500">
@@ -292,11 +515,19 @@
     <p class="text-gray-500 text-sm">© 2025 ProfitAI.io - PLATEFORME DE TRADING SIMULÉ - PAS DE CONSEIL FINANCIER</p>
 </footer>
 
-<!-- JAVASCRIPT TRADING -->
+<!-- JAVASCRIPT COMPLET -->
 <script>
-// ===== TRADUCTIONS =====
+// ===== TRADUCTIONS COMPLÈTES =====
 const translations = {
     fr: {
+        // Page principale
+        pageTitle: "ProfitAI.io - Intelligence Artificielle Trading",
+        legalBanner: "⚠️ MODE DÉMONSTRATION - TRADING SIMULÉ - PAS DE CONSEIL FINANCIER",
+        zndDescription: "La première crypto-monnaie indexée sur des minéraux réels",
+        priceLabel: "Prix ZND",
+        buyBtn: "Acheter ZND sur MineralX",
+        
+        // Trading
         tradingTitle: "💹 Plateforme de Trading Simulé",
         tradePanelTitle: "Exécuter un Trade",
         assetLabel: "Actif à trader",
@@ -322,9 +553,51 @@ const translations = {
         thQuantity: "Quantité",
         thPrice: "Prix",
         thTotal: "Total",
-        thStatus: "Statut"
+        thStatus: "Statut",
+        
+        // IA Trading
+        iaTitle: "🤖 Intelligence Artificielle Trading",
+        signalTitle: "Signal IA en Temps Réel",
+        reasonLabel: "Raison:",
+        entryLabel: "Entry:",
+        stoplossLabel: "Stop Loss:",
+        targetLabel: "Target:",
+        premiumDesc: "Signaux IA en temps réel, analyses techniques, prédictions machine learning",
+        premiumIncludes: "Inclus: API IA, dashboard complet, support Telegram",
+        
+        // Analyse Technique
+        techAnalysisTitle: "📊 Analyse Technique IA Temps Réel",
+        indicatorsTitle: "📈 Indicateurs Techniques",
+        rsiLabel: "RSI (14)",
+        macdLabel: "MACD",
+        bollingerLabel: "Bollinger Bands",
+        volumeLabel: "Volume 24h",
+        sentimentTitle: "🎯 Sentiment de Marché IA",
+        factorsTitle: "Facteurs d'Influence",
+        mlPredictionsTitle: "🤖 Prédictions Machine Learning",
+        pred1hTitle: "1 Heure",
+        pred24hTitle: "24 Heures",
+        pred7dTitle: "7 Jours",
+        mlAlgorithmsTitle: "Algorithmes ML Actifs",
+        
+        // Signaux Temps Réel
+        realtimeSignalsTitle: "🚨 Signaux IA Temps Réel",
+        liveFeedTitle: "📡 Feed Live des Signaux",
+        liveStatus: "EN DIRECT",
+        alertsTitle: "🔔 Alertes Personnalisées",
+        setupAlertsTitle: "Configurer les Alertes",
+        priceAlertLabel: "Alerte Prix",
+        rsiAlertLabel: "Alerte RSI",
+        setAlertText: "Activer l'Alerte",
+        activeAlertsTitle: "Alertes Actives"
     },
     en: {
+        pageTitle: "ProfitAI.io - AI Trading Intelligence",
+        legalBanner: "⚠️ DEMONSTRATION MODE - SIMULATED TRADING - NO FINANCIAL ADVICE",
+        zndDescription: "The first cryptocurrency backed by real minerals",
+        priceLabel: "ZND Price",
+        buyBtn: "Buy ZND on MineralX",
+        
         tradingTitle: "💹 Simulated Trading Platform",
         tradePanelTitle: "Execute Trade",
         assetLabel: "Asset to trade",
@@ -350,9 +623,48 @@ const translations = {
         thQuantity: "Quantity",
         thPrice: "Price",
         thTotal: "Total",
-        thStatus: "Status"
+        thStatus: "Status",
+        
+        iaTitle: "🤖 Artificial Intelligence Trading",
+        signalTitle: "Real-time AI Signal",
+        reasonLabel: "Reason:",
+        entryLabel: "Entry:",
+        stoplossLabel: "Stop Loss:",
+        targetLabel: "Target:",
+        premiumDesc: "Real-time AI signals, technical analysis, machine learning predictions",
+        premiumIncludes: "Includes: AI API, full dashboard, Telegram support",
+        
+        techAnalysisTitle: "📊 Real-time AI Technical Analysis",
+        indicatorsTitle: "📈 Technical Indicators",
+        rsiLabel: "RSI (14)",
+        macdLabel: "MACD",
+        bollingerLabel: "Bollinger Bands",
+        volumeLabel: "Volume 24h",
+        sentimentTitle: "🎯 AI Market Sentiment",
+        factorsTitle: "Influence Factors",
+        mlPredictionsTitle: "🤖 Machine Learning Predictions",
+        pred1hTitle: "1 Hour",
+        pred24hTitle: "24 Hours",
+        pred7dTitle: "7 Days",
+        mlAlgorithmsTitle: "Active ML Algorithms",
+        
+        realtimeSignalsTitle: "🚨 Real-time AI Signals",
+        liveFeedTitle: "📡 Live Signals Feed",
+        liveStatus: "LIVE",
+        alertsTitle: "🔔 Custom Alerts",
+        setupAlertsTitle: "Setup Alerts",
+        priceAlertLabel: "Price Alert",
+        rsiAlertLabel: "RSI Alert",
+        setAlertText: "Enable Alert",
+        activeAlertsTitle: "Active Alerts"
     },
     ru: {
+        pageTitle: "ProfitAI.io - AI Трейдинг",
+        legalBanner: "⚠️ ДЕМО-РЕЖИМ - СИМУЛЯЦИЯ ТОРГОВЛИ - НЕТ ФИНАНСОВЫХ СОВЕТОВ",
+        zndDescription: "Первая криптовалюта, обеспеченная реальными минералами",
+        priceLabel: "Цена ZND",
+        buyBtn: "Купить ZND на MineralX",
+        
         tradingTitle: "💹 Торговая Платформа (Симуляция)",
         tradePanelTitle: "Выполнить Сделку",
         assetLabel: "Актив для торговли",
@@ -378,7 +690,40 @@ const translations = {
         thQuantity: "Количество",
         thPrice: "Цена",
         thTotal: "Всего",
-        thStatus: "Статус"
+        thStatus: "Статус",
+        
+        iaTitle: "🤖 Торговля с Искусственным Интеллектом",
+        signalTitle: "Сигнал AI в реальном времени",
+        reasonLabel: "Причина:",
+        entryLabel: "Вход:",
+        stoplossLabel: "Стоп Лосс:",
+        targetLabel: "Цель:",
+        premiumDesc: "Сигналы AI в реальном времени, технический анализ, прогнозы ML",
+        premiumIncludes: "Включает: AI API, полный дашборд, Telegram поддержка",
+        
+        techAnalysisTitle: "📊 AI Технический Анализ в Реальном Времени",
+        indicatorsTitle: "📈 Технические Индикаторы",
+        rsiLabel: "RSI (14)",
+        macdLabel: "MACD",
+        bollingerLabel: "Полосы Боллинджера",
+        volumeLabel: "Объем 24ч",
+        sentimentTitle: "🎯 AI Настроение Рынка",
+        factorsTitle: "Факторы Влияния",
+        mlPredictionsTitle: "🤖 Прогнозы Машинного Обучения",
+        pred1hTitle: "1 Час",
+        pred24hTitle: "24 Часа",
+        pred7dTitle: "7 Дней",
+        mlAlgorithmsTitle: "Активные ML Алгоритмы",
+        
+        realtimeSignalsTitle: "🚨 AI Сигналы в Реальном Времени",
+        liveFeedTitle: "📡 Лента Сигналов",
+        liveStatus: "В ЭФИРЕ",
+        alertsTitle: "🔔 Персональные Оповещения",
+        setupAlertsTitle: "Настройка Оповещений",
+        priceAlertLabel: "Оповещение Цены",
+        rsiAlertLabel: "Оповещение RSI",
+        setAlertText: "Активировать Оповещение",
+        activeAlertsTitle: "Активные Оповещения"
     }
 };
 
@@ -402,25 +747,36 @@ let currentPrices = {
 
 let tradesHistory = [];
 
+// ===== FONCTION DE TRADUCTION =====
+function updateLanguage(lang) {
+    document.documentElement.lang = lang;
+    
+    // Mettre à jour tous les textes avec les traductions
+    Object.keys(translations[lang]).forEach(key => {
+        const elements = document.querySelectorAll(`[id="${key}"]`);
+        elements.forEach(element => {
+            if (element.tagName === 'INPUT' || element.tagName === 'SELECT') {
+                element.placeholder = translations[lang][key];
+            } else {
+                element.textContent = translations[lang][key];
+            }
+        });
+    });
+}
+
 // ===== INITIALISATION =====
 document.addEventListener('DOMContentLoaded', function() {
     updateLanguage('fr');
     initializeTrading();
     updatePortfolioDisplay();
     generateTradesHistory();
+    startRealTimeUpdates();
     
-    // Mettre à jour les prix en temps réel
-    setInterval(updatePrices, 3000);
-});
-
-// ===== FONCTIONS DE TRADUCTION =====
-function updateLanguage(lang) {
-    // Mettre à jour tous les textes avec les traductions
-    Object.keys(translations[lang]).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) element.textContent = translations[lang][key];
+    // Écouteur de changement de langue
+    document.getElementById('lang-select').addEventListener('change', (e) => {
+        updateLanguage(e.target.value);
     });
-}
+});
 
 // ===== INITIALISATION TRADING =====
 function initializeTrading() {
@@ -447,10 +803,8 @@ function initializeTrading() {
     // Trade IA
     document.getElementById('execute-ai-trade').addEventListener('click', executeAITrade);
     
-    // Sélecteur de langue
-    document.getElementById('lang-select').addEventListener('change', (e) => {
-        updateLanguage(e.target.value);
-    });
+    // Alertes
+    document.getElementById('set-alert-btn').addEventListener('click', setupAlert);
 }
 
 // ===== PRÉPARATION DU TRADE =====
@@ -553,7 +907,7 @@ function executeAITrade() {
     
     // Pré-remplir le formulaire avec le signal IA
     document.getElementById('asset-select').value = asset;
-    document.getElementById('quantity').value = (action === 'BUY' ? 100 : 50); // Quantité par défaut
+    document.getElementById('quantity').value = (action === 'BUY' ? 100 : 50);
     
     // Préparer le trade
     prepareTrade(action.toLowerCase());
@@ -623,7 +977,7 @@ function updatePortfolioDisplay() {
         return total + (userPortfolio.assets[asset].amount * currentPrices[asset]);
     }, userPortfolio.USDT);
     
-    const initialValue = 10000; // Valeur initiale fixe
+    const initialValue = 10000;
     const perf = ((totalValue - initialValue) / initialValue * 100);
     
     document.getElementById('portfolio-perf').textContent = 
@@ -663,11 +1017,179 @@ function generateTradesHistory() {
     });
 }
 
+// ===== GÉNÉRATEUR D'ANALYSE TECHNIQUE =====
+function updateTechnicalAnalysis() {
+    const assets = ['ZND', 'BTC', 'ETH', 'BNB'];
+    const currentAsset = document.getElementById('asset-select').value;
+    
+    // RSI dynamique
+    const rsi = (Math.random() * 100).toFixed(1);
+    document.getElementById('rsi-value').textContent = rsi;
+    
+    // Couleur RSI
+    let rsiColor = 'text-yellow-400';
+    let rsiSignal = 'Neutre';
+    if (rsi > 70) {
+        rsiColor = 'text-red-400';
+        rsiSignal = 'Sur-achat';
+    } else if (rsi < 30) {
+        rsiColor = 'text-green-400';
+        rsiSignal = 'Sur-vente';
+    }
+    document.getElementById('rsi-value').className = `text-2xl font-bold ${rsiColor}`;
+    document.getElementById('rsi-signal').textContent = rsiSignal;
+    document.getElementById('rsi-bar').style.width = `${rsi}%`;
+    
+    // MACD dynamique
+    const macd = (Math.random() * 0.4 - 0.2).toFixed(3);
+    const macdTrend = macd > 0 ? 'Haussière' : 'Baissière';
+    const macdColor = macd > 0 ? 'text-blue-400' : 'text-red-400';
+    document.getElementById('macd-value').textContent = macd > 0 ? `+${macd}` : macd;
+    document.getElementById('macd-value').className = `text-2xl font-bold ${macdColor}`;
+    document.getElementById('macd-trend').textContent = macdTrend;
+    document.getElementById('macd-trend').className = `text-xs px-2 py-1 rounded ${macd > 0 ? 'bg-blue-900' : 'bg-red-900'}`;
+    
+    // Bollinger Bands
+    const bbPosition = ['Bande Supérieure', 'Bande Moyenne', 'Bande Inférieure'][Math.floor(Math.random() * 3)];
+    const bbColor = bbPosition === 'Bande Supérieure' ? 'text-red-400' : 
+                   bbPosition === 'Bande Inférieure' ? 'text-green-400' : 'text-yellow-400';
+    document.getElementById('bollinger-position').textContent = bbPosition;
+    document.getElementById('bollinger-position').className = `text-sm ${bbColor}`;
+    
+    // Volume
+    const volumeChange = (Math.random() * 50 - 10).toFixed(1);
+    const volumeColor = volumeChange > 0 ? 'text-green-400' : 'text-red-400';
+    document.getElementById('volume-value').textContent = `${volumeChange > 0 ? '+' : ''}${volumeChange}%`;
+    document.getElementById('volume-value').className = `text-2xl font-bold ${volumeColor}`;
+}
+
+// ===== GÉNÉRATEUR DE SENTIMENT =====
+function updateMarketSentiment() {
+    const sentiment = Math.floor(Math.random() * 100);
+    document.getElementById('sentiment-value').textContent = `${sentiment}%`;
+    
+    let sentimentText = '';
+    let sentimentColor = '';
+    
+    if (sentiment > 70) {
+        sentimentText = 'Très Haussier';
+        sentimentColor = 'text-green-400';
+    } else if (sentiment > 50) {
+        sentimentText = 'Haussier';
+        sentimentColor = 'text-green-300';
+    } else if (sentiment > 30) {
+        sentimentText = 'Neutre';
+        sentimentColor = 'text-yellow-400';
+    } else {
+        sentimentText = 'Baissier';
+        sentimentColor = 'text-red-400';
+    }
+    
+    document.getElementById('sentiment-text').textContent = sentimentText;
+    document.getElementById('sentiment-text').className = `text-xl font-bold ${sentimentColor}`;
+    document.getElementById('sentiment-gauge').style.strokeDasharray = `${sentiment}, 100`;
+}
+
+// ===== GÉNÉRATEUR DE PRÉDICTIONS ML =====
+function updateMLPredictions() {
+    // Prédiction 1H
+    const pred1h = (Math.random() * 6 - 2).toFixed(1);
+    const pred1hColor = pred1h > 0 ? 'text-green-400' : 'text-red-400';
+    document.getElementById('pred-1h-direction').textContent = `${pred1h > 0 ? '+' : ''}${pred1h}%`;
+    document.getElementById('pred-1h-direction').className = `text-2xl font-bold ${pred1hColor}`;
+    
+    // Prédiction 24H
+    const pred24h = (Math.random() * 15 - 5).toFixed(1);
+    const pred24hColor = pred24h > 0 ? 'text-green-400' : 'text-red-400';
+    document.getElementById('pred-24h-direction').textContent = `${pred24h > 0 ? '+' : ''}${pred24h}%`;
+    document.getElementById('pred-24h-direction').className = `text-2xl font-bold ${pred24hColor}`;
+    
+    // Prédiction 7J
+    const pred7d = (Math.random() * 30 - 10).toFixed(1);
+    const pred7dColor = pred7d > 0 ? 'text-green-400' : 'text-red-400';
+    document.getElementById('pred-7d-direction').textContent = `${pred7d > 0 ? '+' : ''}${pred7d}%`;
+    document.getElementById('pred-7d-direction').className = `text-2xl font-bold ${pred7dColor}`;
+}
+
+// ===== GÉNÉRATEUR DE SIGNALS TEMPS RÉEL =====
+function generateLiveSignals() {
+    const signalsFeed = document.getElementById('signals-feed');
+    const signals = [
+        { type: 'BUY', asset: 'ZND', strength: 'FORT', reason: 'RSI oversold + Volume spike' },
+        { type: 'SELL', asset: 'BTC', strength: 'MOYEN', reason: 'Resistance test failed' },
+        { type: 'BUY', asset: 'ETH', strength: 'FAIBLE', reason: 'Support bounce detected' },
+        { type: 'HOLD', asset: 'BNB', strength: 'NEUTRE', reason: 'Consolidation pattern' }
+    ];
+    
+    const signal = signals[Math.floor(Math.random() * signals.length)];
+    const timestamp = new Date().toLocaleTimeString();
+    
+    const signalElement = document.createElement('div');
+    signalElement.className = `p-3 rounded-lg ${
+        signal.type === 'BUY' ? 'signal-buy' : 
+        signal.type === 'SELL' ? 'signal-sell' : 
+        'signal-hold'
+    }`;
+    
+    signalElement.innerHTML = `
+        <div class="flex justify-between items-start">
+            <div>
+                <span class="font-bold ${
+                    signal.type === 'BUY' ? 'text-green-400' : 
+                    signal.type === 'SELL' ? 'text-red-400' : 
+                    'text-yellow-400'
+                }">${signal.type} ${signal.asset}</span>
+                <span class="ml-2 text-xs px-2 py-1 ${
+                    signal.strength === 'FORT' ? 'bg-green-600' : 
+                    signal.strength === 'MOYEN' ? 'bg-yellow-600' : 
+                    'bg-gray-600'
+                } rounded">${signal.strength}</span>
+            </div>
+            <span class="text-xs text-gray-400">${timestamp}</span>
+        </div>
+        <p class="text-sm text-gray-300 mt-1">${signal.reason}</p>
+    `;
+    
+    // Ajouter en haut de la liste
+    signalsFeed.insertBefore(signalElement, signalsFeed.firstChild);
+    
+    // Limiter à 10 signaux
+    if (signalsFeed.children.length > 10) {
+        signalsFeed.removeChild(signalsFeed.lastChild);
+    }
+}
+
+// ===== GESTION DES ALERTES =====
+function setupAlert() {
+    const priceAlert = document.getElementById('price-alert').value;
+    const rsiAlert = document.getElementById('rsi-alert').value;
+    
+    if (priceAlert || rsiAlert) {
+        const alertsList = document.getElementById('active-alerts-list');
+        const alertElement = document.createElement('div');
+        
+        alertElement.className = 'flex justify-between items-center p-2 bg-yellow-900/30 rounded';
+        alertElement.innerHTML = `
+            <span class="text-sm">${priceAlert ? `ZND ${priceAlert > currentPrices.ZND ? '>' : '<'} $${priceAlert}` : rsiAlert === 'overbought' ? 'RSI > 70' : 'RSI < 30'}</span>
+            <span class="text-xs bg-yellow-600 px-2 py-1 rounded">ACTIVE</span>
+        `;
+        
+        alertsList.appendChild(alertElement);
+        
+        // Réinitialiser les champs
+        document.getElementById('price-alert').value = '';
+        
+        showNotification('Alerte activée avec succès !', 'success');
+    } else {
+        showNotification('Veuillez configurer une alerte', 'error');
+    }
+}
+
 // ===== MISE À JOUR DES PRIX =====
 function updatePrices() {
     // Simuler des variations de prix aléatoires
     Object.keys(currentPrices).forEach(asset => {
-        const change = (Math.random() - 0.5) * 0.1; // ±5%
+        const change = (Math.random() - 0.5) * 0.1;
         currentPrices[asset] *= (1 + change);
         
         // Mettre à jour l'affichage du prix ZND
@@ -683,9 +1205,56 @@ function updatePrices() {
     }
 }
 
+// ===== GÉNÉRATEUR DE SIGNAL IA PRINCIPAL =====
+function generateSignal() {
+    const signals = ['BUY', 'SELL', 'HOLD'];
+    const assets = ['ZND', 'BTC', 'ETH', 'BNB'];
+    const signal = Math.random() > 0.6 ? 'BUY' : (Math.random() > 0.5 ? 'SELL' : 'HOLD');
+    const asset = Math.random() < 0.4 ? 'ZND' : assets[Math.floor(Math.random() * assets.length)];
+    const confidence = Math.floor(Math.random() * 20) + 75;
+    
+    const icon = signal === 'BUY' ? '📈' : signal === 'SELL' ? '📉' : '➡️';
+    const color = signal === 'BUY' ? 'text-green-400' : signal === 'SELL' ? 'text-red-400' : 'text-yellow-400';
+    
+    document.getElementById('ai-main-icon').textContent = icon;
+    document.getElementById('ai-main-signal').textContent = `${signal} ${asset}`;
+    document.getElementById('ai-main-signal').className = `text-4xl font-bold mb-2 ${color}`;
+    document.getElementById('ai-main-confidence').textContent = confidence + '%';
+    
+    // Raison
+    const reasons = ['RSI oversold', 'Volume spike detected', 'MACD crossover', 'Support bounce', 'Resistance break'];
+    document.getElementById('ai-reason').textContent = reasons[Math.floor(Math.random() * reasons.length)];
+    
+    // Entry, Stop Loss, Target
+    const entryPrice = currentPrices[asset] || (Math.random() * 0.01).toFixed(4);
+    document.getElementById('ai-entry').textContent = '$' + entryPrice;
+    document.getElementById('ai-sl').textContent = '$' + (parseFloat(entryPrice) * 0.9).toFixed(4);
+    document.getElementById('ai-tp').textContent = '$' + (parseFloat(entryPrice) * 1.2).toFixed(4);
+}
+
+// ===== MISE À JOUR EN TEMPS RÉEL =====
+function startRealTimeUpdates() {
+    // Analyse technique toutes les 3 secondes
+    setInterval(updateTechnicalAnalysis, 3000);
+    
+    // Sentiment toutes les 5 secondes
+    setInterval(updateMarketSentiment, 5000);
+    
+    // Prédictions ML toutes les 10 secondes
+    setInterval(updateMLPredictions, 10000);
+    
+    // Signaux live toutes les 8 secondes
+    setInterval(generateLiveSignals, 8000);
+    
+    // Prix toutes les 3 secondes
+    setInterval(updatePrices, 3000);
+    
+    // Signal IA principal toutes les 5 secondes
+    setInterval(generateSignal, 5000);
+}
+
 // ===== NOTIFICATIONS =====
 function showNotification(message, type = 'info') {
-    // Créer une notification temporaire
     const notification = document.createElement('div');
     notification.className = `fixed top-20 right-4 p-4 rounded-lg z-50 ${
         type === 'success' ? 'bg-green-900 text-green-300' : 
@@ -696,12 +1265,27 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // Supprimer après 3 secondes
     setTimeout(() => {
         notification.remove();
     }, 3000);
 }
 
-// ===== GÉNÉRATEUR DE SIGNAL IA =====
-function generateSignal() {
-    const signals = ['
+// ===== INITIALISATION DES VALEURS =====
+function initializeValues() {
+    updateTechnicalAnalysis();
+    updateMarketSentiment();
+    updateMLPredictions();
+    generateSignal();
+    
+    // Générer quelques signaux initiaux
+    for (let i = 0; i < 3; i++) {
+        generateLiveSignals();
+    }
+}
+
+// Démarrer l'initialisation
+initializeValues();
+</script>
+
+</body>
+</html>
