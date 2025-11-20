@@ -131,6 +131,30 @@
     </div>
 </section>
 
+<!-- SECTION MARCHÉS MULTI-ASSETS -->
+<section class="container mx-auto p-8">
+    <div class="bg-gray-900 p-6 rounded-lg border-2 border-blue-500">
+        <h2 class="text-3xl font-bold mb-6 text-blue-400">📈 Marchés Multi-Assets</h2>
+        
+        <!-- SELECTEUR DE MARCHÉ -->
+        <div class="mb-6">
+            <label class="block text-gray-400 mb-2">Type de Marché</label>
+            <select id="market-type" class="w-full bg-gray-800 p-3 rounded border border-green-500">
+                <option value="crypto">Cryptomonnaies</option>
+                <option value="stocks">Actions</option>
+                <option value="forex">Forex</option>
+                <option value="indices">Indices</option>
+                <option value="metals">Métaux</option>
+            </select>
+        </div>
+
+        <!-- GRID DES ACTIFS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="assets-grid">
+            <!-- Rempli dynamiquement par JavaScript -->
+        </div>
+    </div>
+</section>
+
 <!-- SECTION ABONNEMENTS -->
 <section id="pricing" class="container mx-auto p-8">
     <h2 class="text-4xl font-bold mb-8 text-center text-blue-400">💎 Choisis ton Plan</h2>
@@ -754,8 +778,307 @@
     </div>
 </div>
 
+<!-- MODAL DÉTAILS ACTIF -->
+<div id="asset-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-50">
+    <div class="bg-gray-900 p-6 rounded-lg border-2 border-green-500 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start mb-4">
+            <h3 id="modal-title" class="text-2xl font-bold text-green-400">Détails de l'actif</h3>
+            <button onclick="closeAssetModal()" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div id="modal-content">
+            <!-- Contenu dynamique -->
+        </div>
+    </div>
+</div>
+
 <!-- JAVASCRIPT COMPLET AVEC MONÉTISATION -->
 <script>
+// ===== DONNÉES MULTI-ASSETS =====
+const marketAssets = {
+    crypto: [
+        { symbol: "BTC", name: "Bitcoin", price: 45000, change: 2.4, volume: "28.5B" },
+        { symbol: "ETH", name: "Ethereum", price: 3000, change: 1.8, volume: "12.3B" },
+        { symbol: "ZND", name: "ZND Token", price: 0.0025, change: 5.4, volume: "45.2M" },
+        { symbol: "BNB", name: "Binance Coin", price: 350, change: 0.8, volume: "1.2B" },
+        { symbol: "SOL", name: "Solana", price: 120, change: 4.2, volume: "3.4B" },
+        { symbol: "XRP", name: "Ripple", price: 0.62, change: -1.2, volume: "2.1B" }
+    ],
+    
+    stocks: [
+        { symbol: "TSLA", name: "Tesla Inc", price: 245.50, change: 3.2, volume: "35.2M" },
+        { symbol: "AAPL", name: "Apple Inc", price: 185.20, change: 1.5, volume: "58.9M" },
+        { symbol: "NVDA", name: "NVIDIA Corp", price: 950.80, change: 5.8, volume: "42.1M" },
+        { symbol: "META", name: "Meta Platforms", price: 485.30, change: 2.1, volume: "28.7M" },
+        { symbol: "GOOGL", name: "Alphabet Inc", price: 175.40, change: 0.9, volume: "31.5M" },
+        { symbol: "JPM", name: "JPMorgan Chase", price: 198.75, change: -0.8, volume: "15.3M" }
+    ],
+    
+    forex: [
+        { symbol: "EUR/USD", name: "Euro/Dollar US", price: 1.0850, change: 0.12, volume: "1.2T" },
+        { symbol: "GBP/USD", name: "Livre/Dollar US", price: 1.2650, change: 0.08, volume: "890B" },
+        { symbol: "USD/JPY", name: "Dollar US/Yen", price: 148.25, change: -0.15, volume: "950B" },
+        { symbol: "USD/CAD", name: "Dollar US/Dollar CAD", price: 1.3520, change: 0.05, volume: "450B" },
+        { symbol: "AUD/USD", name: "Dollar AUD/Dollar US", price: 0.6580, change: -0.20, volume: "520B" },
+        { symbol: "USD/CHF", name: "Dollar US/Franc Suisse", price: 0.8680, change: 0.10, volume: "380B" }
+    ],
+    
+    indices: [
+        { symbol: "SPX", name: "S&P 500", price: 5120.50, change: 0.85, volume: "4.2B" },
+        { symbol: "NASDAQ", name: "Nasdaq 100", price: 17980.25, change: 1.25, volume: "3.8B" },
+        { symbol: "DJI", name: "Dow Jones", price: 38750.40, change: 0.45, volume: "2.9B" },
+        { symbol: "DAX", name: "DAX 40", price: 17720.30, change: 0.65, volume: "1.8B" },
+        { symbol: "FTSE", name: "FTSE 100", price: 7680.15, change: -0.25, volume: "1.5B" },
+        { symbol: "NIKKEI", name: "Nikkei 225", price: 38570.80, change: 1.85, volume: "2.1B" }
+    ],
+    
+    metals: [
+        { symbol: "XAU/USD", name: "Or", price: 2185.50, change: 0.75, volume: "285B" },
+        { symbol: "XAG/USD", name: "Argent", price: 24.35, change: 1.25, volume: "45B" },
+        { symbol: "XPT/USD", name: "Platine", price: 920.80, change: -0.35, volume: "18B" },
+        { symbol: "XPD/USD", name: "Palladium", price: 1050.40, change: -1.20, volume: "12B" },
+        { symbol: "COPPER", name: "Cuivre", price: 3.85, change: 0.45, volume: "35B" },
+        { symbol: "ALUMINUM", name: "Aluminium", price: 2.25, change: 0.15, volume: "28B" }
+    ]
+};
+
+// ===== GESTION DES MARCHÉS =====
+function initializeMarkets() {
+    const marketSelect = document.getElementById('market-type');
+    const assetsGrid = document.getElementById('assets-grid');
+    
+    // Écouteur changement de marché
+    marketSelect.addEventListener('change', function(e) {
+        updateAssetsGrid(e.target.value);
+    });
+    
+    // Initialisation premier marché
+    updateAssetsGrid('crypto');
+}
+
+function updateAssetsGrid(marketType) {
+    const assetsGrid = document.getElementById('assets-grid');
+    const assets = marketAssets[marketType];
+    
+    assetsGrid.innerHTML = '';
+    
+    assets.forEach(asset => {
+        const changeColor = asset.change >= 0 ? 'text-green-400' : 'text-red-400';
+        const changeIcon = asset.change >= 0 ? '📈' : '📉';
+        
+        const assetCard = document.createElement('div');
+        assetCard.className = 'bg-black/50 p-4 rounded-lg border border-gray-700 hover:border-green-500 cursor-pointer transition duration-300';
+        assetCard.onclick = () => openAssetModal(asset, marketType);
+        
+        assetCard.innerHTML = `
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h4 class="font-bold text-lg">${asset.symbol}</h4>
+                    <p class="text-gray-400 text-sm">${asset.name}</p>
+                </div>
+                <span class="text-2xl">${getAssetIcon(asset.symbol)}</span>
+            </div>
+            
+            <div class="mt-4">
+                <p class="text-2xl font-bold">$${asset.price.toLocaleString()}</p>
+                <p class="${changeColor} text-sm mt-1">
+                    ${changeIcon} ${asset.change >= 0 ? '+' : ''}${asset.change}%
+                </p>
+                <p class="text-gray-400 text-xs mt-2">Volume: ${asset.volume}</p>
+            </div>
+            
+            <div class="mt-3 flex gap-2">
+                <button onclick="event.stopPropagation(); prepareQuickTrade('${asset.symbol}', 'buy')" 
+                        class="flex-1 py-2 bg-green-600 rounded text-sm font-bold hover:bg-green-700">
+                    Acheter
+                </button>
+                <button onclick="event.stopPropagation(); prepareQuickTrade('${asset.symbol}', 'sell')" 
+                        class="flex-1 py-2 bg-red-600 rounded text-sm font-bold hover:bg-red-700">
+                    Vendre
+                </button>
+            </div>
+        `;
+        
+        assetsGrid.appendChild(assetCard);
+    });
+}
+
+function getAssetIcon(symbol) {
+    const icons = {
+        // Crypto
+        'BTC': '₿', 'ETH': 'Ξ', 'ZND': '⚡', 'BNB': '💎', 'SOL': '🔗', 'XRP': '✕',
+        // Actions
+        'TSLA': '🚗', 'AAPL': '🍎', 'NVDA': '🎮', 'META': '👥', 'GOOGL': '🔍', 'JPM': '🏦',
+        // Forex
+        'EUR/USD': '💶', 'GBP/USD': '💷', 'USD/JPY': '💴', 'USD/CAD': '🍁', 'AUD/USD': '🦘', 'USD/CHF': '🇨🇭',
+        // Indices
+        'SPX': '📊', 'NASDAQ': '💻', 'DJI': '🏢', 'DAX': '🇩🇪', 'FTSE': '🇬🇧', 'NIKKEI': '🇯🇵',
+        // Métaux
+        'XAU/USD': '🥇', 'XAG/USD': '🥈', 'XPT/USD': '⚪', 'XPD/USD': '🔘', 'COPPER': '🔴', 'ALUMINUM': '🔵'
+    };
+    return icons[symbol] || '📊';
+}
+
+// ===== MODAL DÉTAILS ACTIF =====
+function openAssetModal(asset, marketType) {
+    const modal = document.getElementById('asset-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    
+    modalTitle.textContent = `${asset.symbol} - ${asset.name}`;
+    
+    modalContent.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- INFORMATIONS DE BASE -->
+            <div class="space-y-4">
+                <h4 class="text-lg font-bold text-blue-400">Informations</h4>
+                <div class="bg-black/30 p-4 rounded">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-400">Prix actuel:</span>
+                        <span class="text-xl font-bold">$${asset.price.toLocaleString()}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-400">Variation 24h:</span>
+                        <span class="${asset.change >= 0 ? 'text-green-400' : 'text-red-400'} font-bold">
+                            ${asset.change >= 0 ? '+' : ''}${asset.change}%
+                        </span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Volume:</span>
+                        <span class="font-bold">${asset.volume}</span>
+                    </div>
+                </div>
+                
+                <!-- ANALYSE IA RAPIDE -->
+                <div class="bg-black/30 p-4 rounded">
+                    <h5 class="font-bold text-yellow-400 mb-2">📊 Analyse IA</h5>
+                    <p class="text-sm text-gray-300">${generateAIAnalysis(asset, marketType)}</p>
+                </div>
+            </div>
+            
+            <!-- TRADING RAPIDE -->
+            <div>
+                <h4 class="text-lg font-bold text-green-400 mb-4">Trading Rapide</h4>
+                <div class="space-y-3">
+                    <input type="number" id="quick-quantity" placeholder="Quantité" 
+                           class="w-full p-2 bg-gray-800 rounded border border-green-500">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="executeQuickTrade('${asset.symbol}', 'buy')" 
+                                class="py-3 bg-green-600 rounded font-bold hover:bg-green-700">
+                            🟢 Acheter
+                        </button>
+                        <button onclick="executeQuickTrade('${asset.symbol}', 'sell')" 
+                                class="py-3 bg-red-600 rounded font-bold hover:bg-red-700">
+                            🔴 Vendre
+                        </button>
+                    </div>
+                    
+                    <!-- SIGNAL IA -->
+                    <div class="mt-4 p-3 bg-blue-900/30 rounded border border-blue-500">
+                        <p class="text-sm">
+                            <span class="font-bold text-yellow-400">Signal IA:</span>
+                            <span id="asset-signal" class="ml-2">BUY</span>
+                        </p>
+                        <p class="text-xs text-gray-400 mt-1">Confiance: 87%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- GRAPHIQUE SIMULÉ -->
+        <div class="mt-6 bg-black/50 p-4 rounded">
+            <h4 class="text-lg font-bold text-purple-400 mb-3">Performance</h4>
+            <div class="h-32 bg-gray-800 rounded flex items-center justify-center text-gray-500">
+                Graphique ${asset.symbol} - Données en temps réel
+            </div>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+}
+
+function closeAssetModal() {
+    document.getElementById('asset-modal').classList.add('hidden');
+}
+
+function generateAIAnalysis(asset, marketType) {
+    const analyses = {
+        crypto: [
+            "Fort momentum haussier détecté avec volume croissant",
+            "Consolidation technique, rupture proche probable",
+            "RSI neutre, attente signal directionnel"
+        ],
+        stocks: [
+            "Solide fondamental avec croissance des revenus",
+            "Support technique testé avec succès",
+            "Divergence positive sur indicateurs"
+        ],
+        forex: [
+            "Tendance principale intacte, pullback d'achat",
+            "Range trading, attente breakout",
+            "Dynamique de carry trade favorable"
+        ],
+        indices: [
+            "Biais haussier sur momentum macro",
+            "Resistance majeure testée",
+            "Rotation sectorielle favorable"
+        ],
+        metals: [
+            "Hedge inflation attractif",
+            "Dollar impactant le momentum",
+            "Demande industrielle soutenue"
+        ]
+    };
+    
+    const marketAnalyses = analyses[marketType] || analyses.crypto;
+    return marketAnalyses[Math.floor(Math.random() * marketAnalyses.length)];
+}
+
+// ===== TRADING RAPIDE =====
+function prepareQuickTrade(symbol, side) {
+    // Pré-remplir le formulaire de trading principal
+    document.getElementById('asset-select').value = symbol;
+    document.getElementById('quantity').value = side === 'buy' ? '100' : '50';
+    
+    // Scroll vers le panel de trading
+    document.getElementById('trade-panel-title').scrollIntoView({ 
+        behavior: 'smooth' 
+    });
+    
+    showNotification(`🔄 Trade ${side === 'buy' ? 'd\\'achat' : 'de vente'} préparé pour ${symbol}`, 'info');
+}
+
+function executeQuickTrade(symbol, side) {
+    const quantity = document.getElementById('quick-quantity').value;
+    
+    if (!quantity || quantity <= 0) {
+        showNotification('❌ Veuillez entrer une quantité valide', 'error');
+        return;
+    }
+    
+    // Simulation d'exécution
+    showNotification(`✅ Ordre ${side === 'buy' ? 'd\\'achat' : 'de vente'} exécuté: ${quantity} ${symbol}`, 'success');
+    closeAssetModal();
+}
+
+// ===== MISE À JOUR TEMPS RÉEL =====
+function updateMarketPrices() {
+    Object.keys(marketAssets).forEach(marketType => {
+        marketAssets[marketType].forEach(asset => {
+            // Simulation de variation de prix
+            const change = (Math.random() - 0.5) * 2;
+            asset.price *= (1 + change / 100);
+            asset.change = change;
+        });
+    });
+    
+    // Mettre à jour l'affichage si un marché est ouvert
+    const currentMarket = document.getElementById('market-type').value;
+    updateAssetsGrid(currentMarket);
+}
+
 // ===== TRADUCTIONS COMPLÈTES =====
 const translations = {
     fr: {
@@ -1026,6 +1349,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateReferralStats();
     startRealTimeUpdates();
     initializeValues();
+    initializeMarkets(); // Initialiser les marchés multi-assets
     
     document.getElementById('lang-select').addEventListener('change', (e) => {
         updateLanguage(e.target.value);
@@ -1193,10 +1517,6 @@ function initializeTrading() {
     document.getElementById('execute-ai-trade').addEventListener('click', executeAITrade);
     document.getElementById('set-alert-btn').addEventListener('click', setupAlert);
 }
-
-// ===== FONCTIONS EXISTANTES (garder toutes les fonctions précédentes) =====
-// [Toutes les fonctions précédentes restent identiques : prepareTrade, executeTrade, connectWallet, etc.]
-// Je garde l'intégralité du code précédent pour assurer la compatibilité
 
 function prepareTrade(side) {
     if (userSubscription.plan === 'none') {
@@ -1592,6 +1912,7 @@ function startRealTimeUpdates() {
     setInterval(generateLiveSignals, 8000);
     setInterval(updatePrices, 3000);
     setInterval(generateSignal, 5000);
+    setInterval(updateMarketPrices, 5000); // Mise à jour des prix multi-assets
 }
 
 function showNotification(message, type = 'info') {
